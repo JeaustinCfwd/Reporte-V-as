@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ThreeDCarousel from './ThreeDCarousel';
+import SpotlightCard from './SpotlightCard';
+import GlareHover from './GlareHover';
+import RatingBox from './RatingBox';
 import '../styles/Home.css';
+import '../styles/SpotlightCard.css';
+import '../styles/GlareHover.css';
 
 // Datos para el carousel
 const carouselItems = [
@@ -78,6 +83,90 @@ function HomeContent() {
             <p>Tiempo de Respuesta</p>
           </div>
         </div>
+      </div>
+
+      {/* Sección de Categorías de Problemas */}
+      <div className="seccion-categorias">
+        <h2 className="titulo-categorias">Categorías de Problemas</h2>
+        <div className="contenedor-categorias">
+          <SpotlightCard
+            className="categoria-card"
+            spotlightColor="rgba(0, 229, 255, 0.2)"
+          >
+            <h3>Baches y Pavimento</h3>
+            <p>Reporta baches, grietas o daños en el pavimento de calles y carreteras.</p>
+          </SpotlightCard>
+          <SpotlightCard
+            className="categoria-card"
+            spotlightColor="rgba(255, 193, 7, 0.2)"
+          >
+            <h3>Señalización</h3>
+            <p>Problemas con señales de tráfico, semáforos o marcas viales.</p>
+          </SpotlightCard>
+          <SpotlightCard
+            className="categoria-card"
+            spotlightColor="rgba(220, 53, 69, 0.2)"
+          >
+            <h3>Iluminación</h3>
+            <p>Luces de calle apagadas, dañadas o con problemas de funcionamiento.</p>
+          </SpotlightCard>
+          <SpotlightCard
+            className="categoria-card"
+            spotlightColor="rgba(40, 167, 69, 0.2)"
+          >
+            <h3>Limpieza</h3>
+            <p>Basura, escombros o problemas de mantenimiento en vías públicas.</p>
+          </SpotlightCard>
+        </div>
+      </div>
+
+      {/* Sección de Plataforma Completa */}
+      <div className="seccion-plataforma">
+        <div className="contenedor-plataforma">
+          <div className="encabezado-plataforma">
+            <GlareHover
+              width="1000px"
+              height="400px"
+              background="#111"
+              borderRadius="20px"
+              borderColor="#333"
+              glareColor="#ffffff"
+              glareOpacity={0.3}
+              glareAngle={-30}
+              glareSize={300}
+              transitionDuration={800}
+              playOnce={false}
+            >
+              <div style={{ padding: '2rem', color: 'white', textAlign: 'center' }}>
+                <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#fff', margin: 0 }}>
+                  Dashboard Administrativo
+                </h2>
+                <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    ✓ Vista de todos los reportes en tiempo real
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    ✓ Filtros por estado, categoría y fecha
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    ✓ Mapa interactivo con marcadores
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    ✓ Estadísticas y métricas detalladas
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    ✓ Gestión de estados de reportes
+                  </li>
+                </ul>
+              </div>
+            </GlareHover>
+          </div>
+        </div>
+      </div>
+
+      {/* Sección RatingBox */}
+      <div className="seccion-ratingbox">
+        <RatingBox />
       </div>
     </div>
   );
