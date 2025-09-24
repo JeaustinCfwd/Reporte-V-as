@@ -1,0 +1,225 @@
+/* Contenedor principal del header */
+.encabezado-sitio {
+  position: fixed;      /* Fijo en la parte superior */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001;        /* Muy por encima del fondo del login */
+  background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro semitransparente */
+  color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor interno para alinear logo y navegación */
+.contenedor-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sección de usuario alineada con la navegación */
+.seccion-usuario {
+  display: flex;
+  align-items: center;
+}
+
+/* Dropdown de usuario */
+.dropdown-usuario {
+  position: relative;
+}
+
+.boton-perfil {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.boton-perfil:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  z-index: 1002;
+  margin-top: 4px;
+}
+
+.item-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.item-dropdown:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-dropdown.logout {
+  color: #ff6b6b;
+}
+
+.item-dropdown.logout:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.separador-dropdown {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 4px 0;
+}
+
+/* Logo / identidad */
+.identidad-sitio h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Navegación desktop */
+.navegacion-desktop .nav-lista {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.enlace-nav {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.enlace-nav:hover {
+  color: #00bcd4;
+}
+
+.enlace-nav.activo {
+  border-bottom: 2px solid #00bcd4;
+}
+
+/* Enlace login (estilo como los otros enlaces de navegación) */
+.boton-login {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  transition: color 0.3s !important;
+  padding: 8px 14px !important;
+  border-radius: 6px !important;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  display: inline-block !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  cursor: pointer !important;
+}
+
+.boton-login:hover {
+  color: #00bcd4 !important;
+  background-color: rgba(0, 188, 212, 0.1) !important;
+  border-color: rgba(0, 188, 212, 0.3) !important;
+  text-decoration: none !important;
+}
+
+/* Botón menú móvil */
+.boton-menu-movil {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Menú móvil */
+.menu-movil {
+  background-color: rgba(0, 0, 0, 0.95);
+  padding: 20px;
+}
+
+.enlace-movil {
+  display: block;
+  padding: 10px 0;
+  color: #fff;
+  text-decoration: none;
+}
+
+.enlace-movil:hover {
+  color: #00bcd4;
+}
+
+/* Iconos en enlaces */
+.icono-enlace {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+/* Separador móvil */
+.separador-movil {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 10px 0;
+}
+
+/* Usuario en móvil */
+.usuario-movil {
+  padding-top: 10px;
+}
+
+.info-usuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  color: #fff;
+  font-weight: 500;
+}
+
+.boton-login-movil {
+  background-color: #00bcd4 !important;
+  color: #fff !important;
+  padding: 12px 20px !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.boton-login-movil:hover {
+  background-color: #0097a7 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navegacion-desktop {
+    display: none;
+  }
+  .boton-menu-movil {
+    display: block;
+  }
+}

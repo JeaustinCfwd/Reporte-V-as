@@ -1,0 +1,259 @@
+/* Estilos compartidos para LoginForm y RegisterForm */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Variables globales y reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Contenedor principal UNIFICADO para LOGIN y REGISTRO */
+.fondo-login,
+.fondo-registro {
+  position: fixed;
+  top: 0; /* Cubre toda la pantalla desde arriba */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+
+  /* Fondo específico para login y registro */
+  background-image: url('../assets/images/formUser-image.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+
+  z-index: 1;
+}
+
+/* Contenedor del formulario */
+.contenedor-login {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  z-index: 2;
+
+  /* Espacio extra para que no quede pegado al header */
+  margin-top: 40px;
+}
+
+/* Título */
+.titulo-login {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Grupos y etiquetas */
+.grupo-entrada { margin-bottom: 20px; }
+
+.etiqueta-entrada {
+  display: block;
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 8px;
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Campos de entrada */
+.campo-entrada {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  padding: 0 15px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.campo-entrada:focus-within {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.icono-entrada { color: rgba(255, 255, 255, 0.9); }
+
+.elemento-entrada {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+}
+
+.elemento-entrada::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+/* Toggle de contraseña */
+.toggle-clave {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+}
+
+.toggle-clave:hover { color: rgba(255, 255, 255, 1); }
+
+/* Checkbox y enlaces */
+.grupo-checkbox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.envoltorio-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  appearance: none;
+  position: relative;
+}
+
+.input-checkbox:checked {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #fff;
+}
+
+.input-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #2d5a2d;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.etiqueta-checkbox,
+.enlace-olvido,
+.texto-inferior,
+.enlace-registro {
+  font-size: 12px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.enlace-olvido,
+.enlace-registro {
+  transition: opacity 0.3s;
+  text-decoration: none;
+}
+
+.enlace-olvido:hover,
+.enlace-registro:hover {
+  opacity: 0.8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón principal */
+.boton-login {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.9) 100%);
+  border: none;
+  border-radius: 8px;
+  color: #2d5a2d;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.boton-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+}
+
+.boton-login:active { transform: translateY(0); }
+
+/* Separador y navegación */
+.separador {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  margin: 30px 0;
+}
+
+.navegacion-inferior {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+  .fondo-login,
+  .fondo-registro { 
+    padding: 15px; 
+  }
+  .contenedor-login { 
+    padding: 20px;
+    max-width: 350px;
+  }
+  .titulo-login { 
+    font-size: 20px; 
+    margin-bottom: 25px; 
+  }
+  .campo-entrada { 
+    height: 44px; 
+  }
+  .boton-login { 
+    height: 46px; 
+  }
+}
+
+.contenedor-login {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
