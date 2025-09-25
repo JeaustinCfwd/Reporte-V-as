@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ThreeDCarousel from './ThreeDCarousel';
-import SpotlightCard from './SpotlightCard';
+import CategoryCarousel from './CategoryCarousel';
 import GlareHover from './GlareHover';
 import RatingBox from './RatingBox';
 import '../styles/Home.css';
-import '../styles/SpotlightCard.css';
+import '../styles/CategoryCarousel.css';
 import '../styles/GlareHover.css';
 
 // Datos para el carousel
@@ -85,40 +85,37 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* Sección de Categorías de Problemas */}
-      <div className="seccion-categorias">
-        <h2 className="titulo-categorias">Categorías de Problemas</h2>
-        <div className="contenedor-categorias">
-          <SpotlightCard
-            className="categoria-card"
-            spotlightColor="rgba(0, 229, 255, 0.2)"
-          >
-            <h3>Baches y Pavimento</h3>
-            <p>Reporta baches, grietas o daños en el pavimento de calles y carreteras.</p>
-          </SpotlightCard>
-          <SpotlightCard
-            className="categoria-card"
-            spotlightColor="rgba(255, 193, 7, 0.2)"
-          >
-            <h3>Señalización</h3>
-            <p>Problemas con señales de tráfico, semáforos o marcas viales.</p>
-          </SpotlightCard>
-          <SpotlightCard
-            className="categoria-card"
-            spotlightColor="rgba(220, 53, 69, 0.2)"
-          >
-            <h3>Iluminación</h3>
-            <p>Luces de calle apagadas, dañadas o con problemas de funcionamiento.</p>
-          </SpotlightCard>
-          <SpotlightCard
-            className="categoria-card"
-            spotlightColor="rgba(40, 167, 69, 0.2)"
-          >
-            <h3>Limpieza</h3>
-            <p>Basura, escombros o problemas de mantenimiento en vías públicas.</p>
-          </SpotlightCard>
-        </div>
-      </div>
+      <CategoryCarousel
+        items={[
+          {
+            id: 1,
+            title: "Baches y Pavimento",
+            description: "Reporta baches, grietas o daños en el pavimento de calles y carreteras.",
+            spotlightColor: "rgba(0, 229, 255, 0.2)"
+          },
+          {
+            id: 2,
+            title: "Señalización",
+            description: "Problemas con señales de tráfico, semáforos o marcas viales.",
+            spotlightColor: "rgba(255, 193, 7, 0.2)"
+          },
+          {
+            id: 3,
+            title: "Iluminación",
+            description: "Luces de calle apagadas, dañadas o con problemas de funcionamiento.",
+            spotlightColor: "rgba(220, 53, 69, 0.2)"
+          },
+          {
+            id: 4,
+            title: "Limpieza",
+            description: "Basura, escombros o problemas de mantenimiento en vías públicas.",
+            spotlightColor: "rgba(40, 167, 69, 0.2)"
+          }
+        ]}
+        autoRotate={true}
+        rotateInterval={4000}
+        cardHeight={300}
+      />
 
       {/* Sección de Plataforma Completa */}
       <div className="seccion-plataforma">

@@ -1,0 +1,62 @@
+.mapa-page {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.mapa-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mapa-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.mapa-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+}
+
+.mapa-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background: white;
+  min-height: 600px; /* Match map height for consistency */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-reports-message {
+  font-size: 1.2rem;
+  color: #64748b;
+  text-align: center;
+  padding: 2rem;
+  margin: 0;
+}
+
+.leaflet-container {
+  border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mapa-page {
+    padding: 1rem;
+  }
+
+  .mapa-title {
+    font-size: 2rem;
+  }
+
+  .mapa-subtitle {
+    font-size: 1rem;
+  }
+}

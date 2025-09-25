@@ -10,8 +10,8 @@ const Header = () => {
 
   const enlaces = [
     { id: 'inicio', nombre: 'Inicio', ruta: '/' },
-    { id: 'reportar', nombre: 'Reportar', ruta: '/reportar', icono: <MapPin size={16} /> },
-    { id: 'mapa', nombre: 'Mapa', ruta: '/mapa' },
+    { id: 'reportar', nombre: 'Reportar', ruta: '/reportCreate', icono: <MapPin size={16} /> },
+    { id: 'mapa', nombre: 'Mapa', ruta: '/mapview' },
     { id: 'dashboard', nombre: 'Dashboard', ruta: '/dashboard' },
   ];
 
