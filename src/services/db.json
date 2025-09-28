@@ -1,3 +1,31 @@
 {
- "reportes": []
+  "reportes": [
+    {
+      "id": 1759032145368,
+      "title": "Otro",
+      "description": "vamoa ver si funciona\n",
+      "lat": 9.7489,
+      "lng": -83.7534,
+      "state": "nuevo",
+      "category": "otro",
+      "timestamp": "2025-09-28T04:02:25.368Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "b403",
+      "name": "Jeaustin",
+      "email": "jeaustincalderonulloafwd@gmail.com",
+      "password": "1234aae",
+      "photo": ""
+    },
+    {
+      "id": "7ca2",
+      "name": "Jeaustin",
+      "email": "jeaustincalu03@gmail.com",
+      "password": "1234aae",
+      "photo": ""
+    }
+  ],
+  "reviews": []
 }

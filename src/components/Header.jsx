@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Menu, X, MapPin } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { Menu, X, MapPin, User, LogOut } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
 
 const Header = () => {
   const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
 
   const toggleMenuMovil = () => setMenuMovilAbierto(!menuMovilAbierto);
 
@@ -39,14 +46,38 @@ const Header = () => {
               </li>
             ))}
 
-            <li>
-              <NavLink
-                to="/login"
-                className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
-              >
-                Iniciar Sesión
-              </NavLink>
-            </li>
+            {user ? (
+              <>
+                <li>
+                  <NavLink
+                    to="/profile"
+                    className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
+                  >
+                    <User size={16} className="inline mr-1" />
+                    Perfil
+                  </NavLink>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="enlace-nav"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    <LogOut size={16} className="inline mr-1" />
+                    Cerrar Sesión
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
+                >
+                  Iniciar Sesión
+                </NavLink>
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -72,13 +103,34 @@ const Header = () => {
               </NavLink>
             ))}
             <hr className="separador-movil" />
-            <NavLink
-              to="/login"
-              className="enlace-movil boton-login-movil"
-              onClick={() => setMenuMovilAbierto(false)}
-            >
-              Iniciar Sesión
-            </NavLink>
+            {user ? (
+              <>
+                <NavLink
+                  to="/profile"
+                  className="enlace-movil"
+                  onClick={() => setMenuMovilAbierto(false)}
+                >
+                  <User size={16} className="inline mr-2" />
+                  Perfil
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="enlace-movil boton-login-movil"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                >
+                  <LogOut size={16} className="inline mr-2" />
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <NavLink
+                to="/login"
+                className="enlace-movil boton-login-movil"
+                onClick={() => setMenuMovilAbierto(false)}
+              >
+                Iniciar Sesión
+              </NavLink>
+            )}
           </nav>
         </div>
       )}

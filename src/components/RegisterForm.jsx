@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { registerUser } from '../services/fetch.js';
 import "../styles/Forms.css";
 
 const RegisterForm = () => {
@@ -25,16 +26,31 @@ const RegisterForm = () => {
     setMostrarClave(!mostrarClave);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmarPassword) {
       alert("Las contraseñas no coinciden");
       return;
     }
-    console.log('Registro enviado:', formData);
-    // Aquí va la lógica de registro
-    // Después de registro exitoso, navegar al login:
-    // navigate('/login');
+    const userData = {
+      name: formData.nombre,
+      email: formData.email,
+      password: formData.password,
+      photo: ''
+    };
+    try {
+      const user = await registerUser(userData);
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/dashboard');
+      } else {
+        alert('Error al registrar usuario');
+      }
+    } catch (error) {
+      alert('Error al registrar: ' + error.message);
+    }
+    // Clear form
+    setFormData({ nombre: '', email: '', password: '', confirmarPassword: '' });
   };
 
   const handleNavigateToLogin = () => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../services/fetch.js';
 import "../styles/Forms.css";
 
 const LoginForm = () => {
@@ -20,12 +21,21 @@ const LoginForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Formulario enviado:', formData);
-    // Aquí va la lógica de autenticación
-    // Después de login exitoso, puedes navegar a dashboard:
-    // navigate('/dashboard');
+    try {
+      const user = await loginUser(formData.email, formData.password);
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/dashboard');
+      } else {
+        alert('Credenciales inválidas');
+      }
+    } catch (error) {
+      alert('Error al iniciar sesión: ' + error.message);
+    }
+    // Clear form
+    setFormData({ email: '', password: '', recordar: false });
   };
 
   const togglePasswordVisibility = () => {
@@ -34,6 +44,10 @@ const LoginForm = () => {
 
   const handleNavigateToRegister = () => {
     navigate('/register');
+  };
+
+  const handleForgotPassword = () => {
+    navigate('/reset-password');
   };
 
   return (
@@ -98,9 +112,14 @@ const LoginForm = () => {
                   Recordarme
                 </label>
               </div>
-              <a href="#forgot" className="enlace-olvido">
+              <button 
+                type="button" 
+                onClick={handleForgotPassword}
+                className="enlace-olvido"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+              >
                 ¿Olvidaste tu contraseña?
-              </a>
+              </button>
             </div>
 
             <button type="submit" className="boton-login">

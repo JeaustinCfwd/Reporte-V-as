@@ -1,68 +1,110 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StarSelector from './StarSelector';
 import RatingSummary from './RatingSummary';
+import { getReviews, postReview } from '../services/fetch.js';
 import '../styles/RatingBox.css';
 
 const RatingBox = () => {
+  const navigate = useNavigate();
   const [userRating, setUserRating] = useState(0);
-  const [allRatings, setAllRatings] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [comment, setComment] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedRatings = localStorage.getItem('userRatings');
-    if (storedRatings) {
-      setAllRatings(JSON.parse(storedRatings));
-    }
+    const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
+    setUser(storedUser);
+
+    const fetchReviews = async () => {
+      try {
+        const fetchedReviews = await getReviews();
+        setReviews(fetchedReviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
   }, []);
 
   const handleRate = (rating) => {
     setUserRating(rating);
   };
 
-  const submitRating = () => {
-    if (userRating > 0 && comment.trim() !== '') {
-      const newRating = { rating: userRating, comment: comment.trim(), id: Date.now() };
-      const newRatings = [...allRatings, newRating];
-      setAllRatings(newRatings);
-      localStorage.setItem('userRatings', JSON.stringify(newRatings));
-      setUserRating(0);
-      setComment('');
-      setShowForm(false);
+  const submitRating = async () => {
+    if (userRating > 0 && comment.trim() !== '' && user) {
+      const newReview = {
+        userId: user.id,
+        userName: user.name,
+        rating: userRating,
+        comment: comment.trim(),
+        timestamp: new Date().toISOString()
+      };
+      try {
+        const review = await postReview(newReview);
+        setReviews([...reviews, review]);
+        setUserRating(0);
+        setComment('');
+        setShowForm(false);
+        alert('Reseña enviada exitosamente');
+      } catch (error) {
+        alert('Error al enviar reseña: ' + error.message);
+      }
     }
   };
 
-  const deleteComment = (id) => {
-    const filteredRatings = allRatings.filter(r => r.id !== id);
-    setAllRatings(filteredRatings);
-    localStorage.setItem('userRatings', JSON.stringify(filteredRatings));
+  const deleteComment = async (id) => {
+    if (!user) return;
+    const review = reviews.find(r => r.id === id);
+    if (review && review.userId === user.id) {
+      // For simplicity, filter out (in real app, DELETE /reviews/:id)
+      const filteredReviews = reviews.filter(r => r.id !== id);
+      setReviews(filteredReviews);
+      // Update backend if needed
+    }
   };
 
-  const ratings = allRatings.reduce((acc, r) => {
+  const ratings = reviews.reduce((acc, r) => {
     acc[r.rating] = (acc[r.rating] || 0) + 1;
     return acc;
   }, {});
 
-  const total = allRatings.length;
-  const average = total > 0 ? allRatings.reduce((sum, r) => sum + r.rating, 0) / total : 0;
+  const total = reviews.length;
+  const average = total > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / total : 0;
+
+  if (loading) return <div>Cargando reseñas...</div>;
 
   return (
     <div className="container">
       <h2 className="heading">Califica Nuestro Sitio Web</h2>
       <p>{average.toFixed(1)} promedio basado en {total} reseñas.</p>
-      <button className="rate-button" onClick={() => setShowForm(true)}>Calificar Ahora</button>
-      {showForm && (
+      {user ? (
+        <button className="rate-button" onClick={() => setShowForm(true)}>Calificar Ahora</button>
+      ) : (
+        <button className="rate-button" onClick={() => navigate('/login')}>
+          Inicia sesión para calificar
+        </button>
+      )}
+      {showForm && user && (
         <div className="rating-form">
           <h3>Califica ReportaVías CR</h3>
           <StarSelector rating={userRating} onRate={handleRate} />
           <textarea
-            placeholder="Deja un comentario (opcional)"
+            placeholder="Deja un comentario"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows="3"
+            required
           />
           <div className="form-buttons">
-            <button onClick={submitRating} disabled={userRating === 0 || comment.trim() === ''}>Enviar</button>
+            <button onClick={submitRating} disabled={userRating === 0 || comment.trim() === ''}>
+              Enviar
+            </button>
             <button onClick={() => setShowForm(false)}>Cancelar</button>
           </div>
         </div>
@@ -71,14 +113,20 @@ const RatingBox = () => {
       <RatingSummary ratings={ratings} total={total} />
       <div className="comments-section">
         <h3>Comentarios</h3>
-        {allRatings.length === 0 && <p>No hay comentarios aún.</p>}
-        {allRatings.map(({ id, rating, comment }) => (
-          <div key={id.toString()} className="comment">
+        {reviews.length === 0 && <p>No hay comentarios aún.</p>}
+        {reviews.map((review) => (
+          <div key={review.id.toString()} className="comment">
             <div className="comment-header">
-              <span>{'★'.repeat(rating)}{'☆'.repeat(5 - rating)}</span>
-              <button className="delete-button" onClick={() => deleteComment(id)}>Eliminar</button>
+              <span>{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
+              <strong>{review.userName}</strong>
+              {user && review.userId === user.id && (
+                <button className="delete-button" onClick={() => deleteComment(review.id)}>
+                  Eliminar
+                </button>
+              )}
             </div>
-            <p>{comment}</p>
+            <p>{review.comment}</p>
+            <small>{new Date(review.timestamp).toLocaleDateString()}</small>
           </div>
         ))}
       </div>

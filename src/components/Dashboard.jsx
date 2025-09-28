@@ -126,19 +126,45 @@ const Dashboard = () => {
     }
   };
 
-  const handleDeleteReport = (id) => {
+const handleDeleteReport = async (id) => {
+  try {
+    const res = await fetch(`http://localhost:3001/reportes/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error(`Error deleting report: ${res.status}`);
     const updatedReports = reports.filter(report => report.id !== id);
+    setReports(updatedReports);
+  } catch (error) {
+    console.error('Error deleting report:', error);
+    // Fallback to localStorage
+    const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
+    const updatedReports = storedReports.filter(report => report.id !== id);
     localStorage.setItem('reports', JSON.stringify(updatedReports));
     setReports(updatedReports);
-  };
+  }
+};
 
-  const handleUpdateState = (id, newState) => {
+const handleUpdateState = async (id, newState) => {
+  try {
+    const res = await fetch(`http://localhost:3001/reportes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state: newState })
+    });
+    if (!res.ok) throw new Error(`Error updating report: ${res.status}`);
     const updatedReports = reports.map(report => 
+      report.id === id ? { ...report, state: newState } : report
+    );
+    setReports(updatedReports);
+  } catch (error) {
+    console.error('Error updating report state:', error);
+    // Fallback to localStorage
+    const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
+    const updatedReports = storedReports.map(report => 
       report.id === id ? { ...report, state: newState } : report
     );
     localStorage.setItem('reports', JSON.stringify(updatedReports));
     setReports(updatedReports);
-  };
+  }
+};
 
   if (loading) {
     return (
