@@ -49,7 +49,7 @@ const RegisterForm = () => {
     } catch (error) {
       alert('Error al registrar: ' + error.message);
     }
-    // Clear form
+    // Limpiar formulario
     setFormData({ nombre: '', email: '', password: '', confirmarPassword: '' });
   };
 

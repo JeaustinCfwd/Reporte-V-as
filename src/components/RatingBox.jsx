@@ -62,10 +62,10 @@ const RatingBox = () => {
     if (!user) return;
     const review = reviews.find(r => r.id === id);
     if (review && review.userId === user.id) {
-      // For simplicity, filter out (in real app, DELETE /reviews/:id)
+      // Por simplicidad, filtrar (en app real, DELETE /reviews/:id)
       const filteredReviews = reviews.filter(r => r.id !== id);
       setReviews(filteredReviews);
-      // Update backend if needed
+      // Actualizar backend si es necesario
     }
   };
 

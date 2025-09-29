@@ -17,7 +17,7 @@ const ReportForm = () => {
     photos: [],
     description: '',
     category: '',
-    location: { lat: 9.7489, lng: -83.7534 }, // Default to Costa Rica center
+    location: { lat: 9.7489, lng: -83.7534 }, // Centro predeterminado de Costa Rica
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,7 +75,7 @@ const ReportForm = () => {
       }
 
       setSubmitSuccess(true);
-      // Reset form
+      // Restablecer formulario
       setFormData({
         photos: [],
         description: '',

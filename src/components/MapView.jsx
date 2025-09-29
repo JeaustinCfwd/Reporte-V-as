@@ -10,7 +10,7 @@ const MapView = () => {
     const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
     setReports(storedReports);
   }, []);
-  const center = [9.7489, -83.7534]; // Costa Rica center
+  const center = [9.7489, -83.7534]; // Centro de Costa Rica
 
   return (
     <div className="mapa-container">
@@ -20,9 +20,9 @@ const MapView = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {reports.length > 0 && reports.map(report => {
-          const fillColor = report.state === 'nuevo' ? '#ff6b35' : // Orange
-                           report.state === 'en_revision' ? '#3b82f6' : // Blue
-                           '#10b981'; // Green for atendido
+          const fillColor = report.state === 'nuevo' ? '#ff6b35' : // Naranja
+                           report.state === 'en_revision' ? '#3b82f6' : // Azul
+                           '#10b981'; // Verde para atendido
           return (
             <CircleMarker
               key={report.id}

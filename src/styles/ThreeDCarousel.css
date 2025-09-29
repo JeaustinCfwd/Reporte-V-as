@@ -1,4 +1,4 @@
-/* ThreeDCarousel.css */
+/* ThreeDCarousel.css - Estilos para el carrusel 3D */
 
 .carousel-section {
   background: transparent;
@@ -339,7 +339,7 @@
   font-size: 1.125rem;
 }
 
-/* Responsive Design */
+/* Diseño responsivo */
 @media (max-width: 768px) {
   .carousel-title {
     font-size: 2rem;

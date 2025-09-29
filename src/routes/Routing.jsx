@@ -14,7 +14,7 @@ import ReportCreate from '../pages/ReportCreate';
 import MapView from '../pages/MapView';
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
-import ResetPassword from '../pages/ResetPassword';
+
 import PrivateRoute from './PrivateRoute';
 const router = createBrowserRouter([
   {
@@ -32,7 +32,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
-      { path: 'reset-password', element: <ResetPassword /> },
       { path: 'reportCreate', element: <PrivateRoute><ReportCreate /></PrivateRoute> },
       { path: 'mapview', element: <PrivateRoute><MapView /></PrivateRoute> },
       { path: 'dashboard', element: <PrivateRoute><Dashboard /></PrivateRoute> },

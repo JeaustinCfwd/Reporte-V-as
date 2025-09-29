@@ -38,7 +38,7 @@ const Dashboard = () => {
         setReports(data);
       } catch (err) {
         setError(err.message);
-        // Fallback to localStorage if API fails
+        // Respaldo a localStorage si la API falla
         const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
         setReports(storedReports);
       } finally {
@@ -48,7 +48,7 @@ const Dashboard = () => {
     fetchReports();
   }, []);
 
-  // Stats calculation
+  // Cálculo de estadísticas
   const statsByState = reports.reduce((acc, report) => {
     acc[report.state] = (acc[report.state] || 0) + 1;
     return acc;
@@ -60,7 +60,7 @@ const Dashboard = () => {
     return acc;
   }, {});
 
-  // Chart data for states (Bar chart)
+  // Datos del gráfico para estados (Gráfico de barras)
   const stateData = {
     labels: ['Nuevos', 'En Revisión', 'Atendidos'],
     datasets: [
@@ -72,9 +72,9 @@ const Dashboard = () => {
           statsByState.atendido || 0
         ],
         backgroundColor: [
-          'rgba(255, 159, 64, 0.8)', // Orange for new
-          'rgba(54, 162, 235, 0.8)', // Blue for in review
-          'rgba(75, 192, 192, 0.8)'  // Green for attended
+          'rgba(255, 159, 64, 0.8)', // Naranja para nuevos
+          'rgba(54, 162, 235, 0.8)', // Azul para en revisión
+          'rgba(75, 192, 192, 0.8)'  // Verde para atendidos
         ],
         borderColor: [
           'rgba(255, 159, 64, 1)',
@@ -86,7 +86,7 @@ const Dashboard = () => {
     ]
   };
 
-  // Chart data for categories (Pie chart)
+  // Datos del gráfico para categorías (Gráfico circular)
   const categoryData = {
     labels: Object.keys(statsByCategory),
     datasets: [
@@ -134,7 +134,7 @@ const handleDeleteReport = async (id) => {
     setReports(updatedReports);
   } catch (error) {
     console.error('Error deleting report:', error);
-    // Fallback to localStorage
+    // Respaldo a localStorage
     const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
     const updatedReports = storedReports.filter(report => report.id !== id);
     localStorage.setItem('reports', JSON.stringify(updatedReports));
@@ -156,7 +156,7 @@ const handleUpdateState = async (id, newState) => {
     setReports(updatedReports);
   } catch (error) {
     console.error('Error updating report state:', error);
-    // Fallback to localStorage
+    // Respaldo a localStorage
     const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
     const updatedReports = storedReports.map(report => 
       report.id === id ? { ...report, state: newState } : report

@@ -34,7 +34,7 @@ const LoginForm = () => {
     } catch (error) {
       alert('Error al iniciar sesión: ' + error.message);
     }
-    // Clear form
+    // Limpiar formulario
     setFormData({ email: '', password: '', recordar: false });
   };
 
@@ -46,9 +46,7 @@ const LoginForm = () => {
     navigate('/register');
   };
 
-  const handleForgotPassword = () => {
-    navigate('/reset-password');
-  };
+
 
   return (
     <div className="fondo-login">
@@ -112,14 +110,6 @@ const LoginForm = () => {
                   Recordarme
                 </label>
               </div>
-              <button 
-                type="button" 
-                onClick={handleForgotPassword}
-                className="enlace-olvido"
-                style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                ¿Olvidaste tu contraseña?
-              </button>
             </div>
 
             <button type="submit" className="boton-login">

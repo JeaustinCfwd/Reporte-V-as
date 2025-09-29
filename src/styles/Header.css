@@ -104,6 +104,7 @@
   display: flex;
   gap: 20px;
   list-style: none;
+  align-items: center; /* Added to align nav items vertically */
 }
 
 .enlace-nav {
@@ -111,6 +112,10 @@
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
+  display: flex; /* Added to align content */
+  align-items: center; /* Added for vertical alignment */
+  height: 100%; /* Ensure full height for alignment */
+  padding: 8px 14px; /* Added padding to match boton-login */
 }
 
 .enlace-nav:hover {
@@ -131,10 +136,12 @@
   border-radius: 6px !important;
   background-color: transparent !important;
   border: 1px solid transparent !important;
-  display: inline-block !important;
+  display: flex !important; /* Changed from inline-block to flex */
+  align-items: center !important; /* Added for vertical alignment */
   font-size: inherit !important;
   line-height: inherit !important;
   cursor: pointer !important;
+  height: 100% !important; /* Ensure full height for alignment */
 }
 
 .boton-login:hover {

@@ -217,7 +217,7 @@
   font-size: 1.125rem;
 }
 
-/* Responsive Design */
+/* Diseño responsivo */
 @media (max-width: 768px) {
   .category-carousel-title {
     font-size: 2rem;

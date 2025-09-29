@@ -17,10 +17,14 @@ const Header = () => {
 
   const enlaces = [
     { id: 'inicio', nombre: 'Inicio', ruta: '/' },
-    { id: 'reportar', nombre: 'Reportar', ruta: '/reportCreate', icono: <MapPin size={16} /> },
-    { id: 'mapa', nombre: 'Mapa', ruta: '/mapview' },
-    { id: 'dashboard', nombre: 'Dashboard', ruta: '/dashboard' },
+    { id: 'reportar', nombre: 'Reportar', ruta: '/reportCreate', icono: <MapPin size={16} />, protected: true },
+    { id: 'mapa', nombre: 'Mapa', ruta: '/mapview', protected: true },
+    { id: 'dashboard', nombre: 'Dashboard', ruta: '/dashboard', protected: true },
   ];
+
+  const handleProtectedClick = () => {
+    alert('Debes crear una cuenta para reportar un problema');
+  };
 
   return (
     <header className="encabezado-sitio">
@@ -31,18 +35,29 @@ const Header = () => {
           </NavLink>
         </div>
 
-        {/* Menú Desktop */}
+        {/* Menú de escritorio */}
         <nav className="navegacion-desktop">
           <ul className="nav-lista">
             {enlaces.map(enlace => (
               <li key={enlace.id}>
-                <NavLink
-                  to={enlace.ruta}
-                  className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
-                >
-                  {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
-                  {enlace.nombre}
-                </NavLink>
+                {enlace.protected && !user ? (
+                  <button
+                    onClick={handleProtectedClick}
+                    className="enlace-nav"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
+                    {enlace.nombre}
+                  </button>
+                ) : (
+                  <NavLink
+                    to={enlace.ruta}
+                    className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
+                  >
+                    {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
+                    {enlace.nombre}
+                  </NavLink>
+                )}
               </li>
             ))}
 
@@ -92,15 +107,27 @@ const Header = () => {
         <div className="menu-movil">
           <nav className="navegacion-movil">
             {enlaces.map(enlace => (
-              <NavLink
-                key={enlace.id}
-                to={enlace.ruta}
-                className="enlace-movil"
-                onClick={() => setMenuMovilAbierto(false)}
-              >
-                {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
-                {enlace.nombre}
-              </NavLink>
+              enlace.protected && !user ? (
+                <button
+                  key={enlace.id}
+                  onClick={() => { handleProtectedClick(); setMenuMovilAbierto(false); }}
+                  className="enlace-movil"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                >
+                  {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
+                  {enlace.nombre}
+                </button>
+              ) : (
+                <NavLink
+                  key={enlace.id}
+                  to={enlace.ruta}
+                  className="enlace-movil"
+                  onClick={() => setMenuMovilAbierto(false)}
+                >
+                  {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
+                  {enlace.nombre}
+                </NavLink>
+              )
             ))}
             <hr className="separador-movil" />
             {user ? (

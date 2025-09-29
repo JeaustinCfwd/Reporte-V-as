@@ -28,7 +28,7 @@
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   background: white;
-  min-height: 600px; /* Match map height for consistency */
+  min-height: 600px; /* Coincidir altura del mapa para consistencia */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +46,7 @@
   border: none;
 }
 
-/* Responsive */
+/* Responsivo */
 @media (max-width: 768px) {
   .mapa-page {
     padding: 1rem;
