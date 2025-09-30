@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Image, Trash2, Home, Camera } from 'lucide-react';
+import { User, Mail, Lock, Camera, Trash2, LogOut, Settings, Shield, Eye, EyeOff } from 'lucide-react';
 import { updateUser, deleteUser } from '../services/fetch.js';
-import "../styles/Forms.css";
 import "../styles/Profile.css";
 
 const ProfileEdit = () => {
@@ -16,6 +15,8 @@ const ProfileEdit = () => {
   });
   const [photoPreview, setPhotoPreview] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user') || 'null');
@@ -99,133 +100,187 @@ const ProfileEdit = () => {
     navigate('/');
   };
 
-  if (!user) return <div>Cargando...</div>;
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+
+  if (!user) return <div className="profile-loading">Cargando...</div>;
 
   return (
-    <div className="fondo-registro">
-      <div className="contenedor-login">
-        <div className="formulario-usuario">
-          <h1 className="titulo-login">Editar Perfil</h1>
+    <div className="profile-container">
+      {/* Sidebar de Navegación */}
+      <aside className="profile-sidebar">
+        <div className="sidebar-section">
+          <h3 className="sidebar-category">TU CUENTA</h3>
+          <nav className="sidebar-nav">
+            <a href="/profile" className="sidebar-link active">
+              <User size={18} />
+              Editar Perfil
+            </a>
+          </nav>
+        </div>
+        
+        <div className="sidebar-section">
+          <button onClick={handleLogout} className="sidebar-link sidebar-logout">
+            <LogOut size={18} />
+            Cerrar Sesión
+          </button>
+        </div>
+      </aside>
 
-          {photoPreview && (
-            <div className="grupo-entrada">
-              <label className="etiqueta-entrada">Foto Actual</label>
-              <img src={photoPreview} alt="Profile" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }} />
-            </div>
-          )}
+      {/* Contenido Principal */}
+      <main className="profile-content">
+        <h1 className="profile-title">Editar Perfil</h1>
 
-          <form onSubmit={handleSubmit}>
-            <div className="grupo-entrada">
-              <label htmlFor="name" className="etiqueta-entrada">Nombre</label>
-              <div className="campo-entrada">
-                <User className="icono-entrada" size={20} />
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Tu nombre"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="elemento-entrada"
-                  required
-                />
+        <form onSubmit={handleSubmit} className="profile-form">
+          {/* Foto de Perfil */}
+          <div className="form-row">
+            <label className="form-label">Foto de Perfil</label>
+            <div className="form-field">
+              <div className="profile-photo-container">
+                <div className="profile-photo-wrapper">
+                  {photoPreview ? (
+                    <img src={photoPreview} alt="Profile" className="profile-photo" />
+                  ) : (
+                    <div className="profile-photo-placeholder">
+                      <User size={40} />
+                    </div>
+                  )}
+                </div>
+                <div className="photo-actions">
+                  <label htmlFor="photo" className="photo-upload-btn">
+                    <Camera size={18} />
+                    {photoPreview ? 'Cambiar foto' : 'Subir foto'}
+                  </label>
+                  {photoPreview && (
+                    <button
+                      type="button"
+                      onClick={() => setPhotoPreview('')}
+                      className="photo-remove-btn"
+                    >
+                      Eliminar foto
+                    </button>
+                  )}
+                  <input
+                    type="file"
+                    id="photo"
+                    name="photo"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="photo-input-hidden"
+                  />
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="grupo-entrada">
-              <label htmlFor="email" className="etiqueta-entrada">Email</label>
-              <div className="campo-entrada">
-                <Mail className="icono-entrada" size={20} />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Tu email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="elemento-entrada"
-                  required
-                />
-              </div>
+          {/* Nombre */}
+          <div className="form-row">
+            <label htmlFor="name" className="form-label">Nombre</label>
+            <div className="form-field">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              />
             </div>
+          </div>
 
-            <div className="grupo-entrada">
-              <label htmlFor="photo" className="etiqueta-entrada">Foto de Perfil</label>
-              <div className="campo-entrada">
-                <Camera className="icono-entrada" size={20} />
-                <input
-                  type="file"
-                  id="photo"
-                  name="photo"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="elemento-entrada"
-                />
-                {photoPreview && <img src={photoPreview} alt="Preview" style={{ width: '50px', height: '50px', marginTop: '10px' }} />}
-              </div>
+          {/* Email */}
+          <div className="form-row">
+            <label htmlFor="email" className="form-label">Email</label>
+            <div className="form-field">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              />
             </div>
+          </div>
 
-            <div className="grupo-entrada">
-              <label htmlFor="password" className="etiqueta-entrada">Nueva Contraseña (opcional)</label>
-              <div className="campo-entrada">
-                <Lock className="icono-entrada" size={20} />
+          {/* Sección de Cambiar Contraseña */}
+          <div className="form-section-divider">
+            <h2 className="form-section-title">Cambiar Contraseña</h2>
+          </div>
+
+          {/* Nueva Contraseña */}
+          <div className="form-row">
+            <label htmlFor="password" className="form-label">Nueva Contraseña</label>
+            <div className="form-field">
+              <div className="password-input-wrapper">
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   name="password"
-                  placeholder="Nueva contraseña"
+                  placeholder="••••••"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="elemento-entrada"
+                  className="form-input"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="password-toggle-btn"
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
+          </div>
 
-            <div className="grupo-entrada">
-              <label htmlFor="confirmPassword" className="etiqueta-entrada">Confirmar Nueva Contraseña</label>
-              <div className="campo-entrada">
-                <Lock className="icono-entrada" size={20} />
+          {/* Confirmar Contraseña */}
+          <div className="form-row">
+            <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña</label>
+            <div className="form-field">
+              <div className="password-input-wrapper">
                 <input
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   name="confirmPassword"
-                  placeholder="Confirma nueva contraseña"
+                  placeholder="Confirmar nueva contraseña"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="elemento-entrada"
+                  className="form-input"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="password-toggle-btn"
+                  aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
+          </div>
 
-            <button type="submit" className="boton-login" disabled={loading}>
-              {loading ? 'Actualizando...' : 'Actualizar Perfil'}
+          {/* Botones de Acción */}
+          <div className="form-actions">
+            <button type="submit" className="btn-primary" disabled={loading}>
+              {loading ? 'Guardando...' : 'Guardar Cambios'}
             </button>
-          </form>
-
-          <div className="separador"></div>
-
-          <button 
-            type="button" 
-            onClick={handleDeleteAccount}
-            className="boton-login"
-            style={{ backgroundColor: '#dc3545' }}
-            disabled={loading}
-          >
-            <Trash2 size={20} className="inline mr-2" /> Eliminar Cuenta
-          </button>
-
-          <div className="navegacion-inferior">
             <button 
               type="button" 
-              onClick={handleBackToHome}
-              className="boton-login"
-              style={{ backgroundColor: '#007bff' }}
+              onClick={handleDeleteAccount}
+              className="btn-danger"
+              disabled={loading}
             >
-              <Home size={20} className="inline mr-2" /> Volver a Inicio
+              <Trash2 size={18} />
+              Eliminar Cuenta
             </button>
           </div>
-        </div>
-      </div>
+        </form>
+      </main>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import "../styles/CategoryCarousel.css";
 
 // Función utilitaria para aplicar 'throttle' (limitación de llamadas)
@@ -184,14 +184,14 @@ const CategoryCarousel = ({
                 }
                 aria-label="Anterior"
               >
-                <ChevronLeft className="category-carousel-btn-icon" />
+                <ArrowLeft className="category-carousel-btn-icon" />
               </button>
               <button
                 className="category-carousel-btn category-carousel-btn-next"
                 onClick={() => setActive((prev) => (prev + 1) % items.length)}
                 aria-label="Siguiente"
               >
-                <ChevronRight className="category-carousel-btn-icon" />
+                <ArrowRight className="category-carousel-btn-icon" />
               </button>
             </>
           )}
