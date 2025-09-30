@@ -1,4 +1,23 @@
+import React, { useMemo } from 'react';
 import '../styles/GlareHover.css';
+
+// Función auxiliar para convertir hex/rgb a rgba de forma robusta
+const hexToRgba = (hex, opacity) => {
+    // Manejar colores que ya son RGBA/RGB o nombres
+    if (hex.startsWith('rgb')) return hex.replace(')', `, ${opacity})`).replace('rgb', 'rgba');
+    if (!hex.startsWith('#')) hex = `#${hex}`;
+
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    
+    // Devolver rgba o un fallback seguro si el color no es un hex válido
+    return result ? 
+      `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity})` :
+      `rgba(255, 255, 255, ${opacity})`;
+};
+
 
 const GlareHover = ({
   width = '500px',
@@ -16,35 +35,42 @@ const GlareHover = ({
   className = '',
   style = {}
 }) => {
-  const hex = glareColor.replace('#', '');
-  let rgba = glareColor;
-  if (/^[0-9A-Fa-f]{6}$/.test(hex)) {
-    const r = parseInt(hex.slice(0, 2), 16);
-    const g = parseInt(hex.slice(2, 4), 16);
-    const b = parseInt(hex.slice(4, 6), 16);
-    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
-  } else if (/^[0-9A-Fa-f]{3}$/.test(hex)) {
-    const r = parseInt(hex[0] + hex[0], 16);
-    const g = parseInt(hex[1] + hex[1], 16);
-    const b = parseInt(hex[2] + hex[2], 16);
-    rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
-  }
+  
+  // useMemo para memorizar la conversión de color y la creación de variables CSS (Optimización)
+  const vars = useMemo(() => {
+    // Conversión de color para compatibilidad con CSS (rgba)
+    const rgba = hexToRgba(glareColor, glareOpacity);
 
-  const vars = {
-    '--gh-width': width,
-    '--gh-height': height,
-    '--gh-bg': background,
-    '--gh-br': borderRadius,
-    '--gh-angle': `${glareAngle}deg`,
-    '--gh-duration': `${transitionDuration}ms`,
-    '--gh-size': `${glareSize}%`,
-    '--gh-rgba': rgba,
-    '--gh-border': borderColor
-  };
+    // Definición de variables CSS para inyección en el estilo del componente
+    return {
+      '--gh-width': width,
+      '--gh-height': height,
+      '--gh-bg': background,
+      '--gh-br': borderRadius,
+      '--gh-angle': `${glareAngle}deg`,
+      '--gh-duration': `${transitionDuration}ms`,
+      '--gh-size': `${glareSize}%`,
+      '--gh-rgba': rgba,
+      '--gh-border': borderColor
+    };
+  }, [
+    glareColor,
+    glareOpacity,
+    width,
+    height,
+    background,
+    borderRadius,
+    glareAngle,
+    transitionDuration,
+    glareSize,
+    borderColor
+  ]);
+
 
   return (
     <div
       className={`glare-hover ${playOnce ? 'glare-hover--play-once' : ''} ${className}`}
+      // Inyección de variables CSS memorizadas y estilos personalizados
       style={{ ...vars, ...style }}
     >
       {children}

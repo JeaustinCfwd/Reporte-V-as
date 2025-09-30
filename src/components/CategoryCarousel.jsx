@@ -1,14 +1,30 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "../styles/CategoryCarousel.css";
 
-// Hook personalizado para detectar mobile
+// Función utilitaria para aplicar 'throttle' (limitación de llamadas)
+const throttle = (func, limit) => {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
+
+// Hook personalizado para detectar mobile (Optimizado)
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const newIsMobile = window.innerWidth < 768;
+      // Solo actualiza si el valor ha cambiado
+      setIsMobile(prevIsMobile => (prevIsMobile !== newIsMobile ? newIsMobile : prevIsMobile));
     };
 
     checkIsMobile();
@@ -37,6 +53,7 @@ const CategoryCarousel = ({
   const isMobile = useIsMobile();
   const minSwipeDistance = 50;
 
+  // Lógica de Auto-rotación y Intersection Observer
   useEffect(() => {
     if (autoRotate && isInView && !isHovering && items.length > 0) {
       const interval = setInterval(() => {
@@ -51,33 +68,40 @@ const CategoryCarousel = ({
       ([entry]) => setIsInView(entry.isIntersecting),
       { threshold: 0.2 }
     );
-
     if (carouselRef.current) {
       observer.observe(carouselRef.current);
     }
-
     return () => observer.disconnect();
   }, []);
 
-  const onTouchStart = (e) => {
+  // Handlers Táctiles (Swipe)
+  const onTouchStart = useCallback((e) => {
+    if (!isMobileSwipe) return;
     setTouchStart(e.targetTouches[0].clientX);
     setTouchEnd(null);
-  };
+  }, [isMobileSwipe]);
 
-  const onTouchMove = (e) => {
+  const onTouchMove = useCallback((e) => {
+    if (!isMobileSwipe) return;
     setTouchEnd(e.targetTouches[0].clientX);
-  };
+  }, [isMobileSwipe]);
 
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+  const onTouchEnd = useCallback(() => {
+    if (!isMobileSwipe || !touchStart || !touchEnd) return;
+
     const distance = touchStart - touchEnd;
+
     if (distance > minSwipeDistance) {
       setActive((prev) => (prev + 1) % items.length);
     } else if (distance < -minSwipeDistance) {
       setActive((prev) => (prev - 1 + items.length) % items.length);
     }
-  };
 
+    setTouchStart(null);
+    setTouchEnd(null);
+  }, [isMobileSwipe, touchStart, touchEnd, minSwipeDistance, items.length]);
+
+  // Clase de Animación
   const getCardAnimationClass = (index) => {
     if (index === active) return "category-carousel-card-active";
     if (index === (active + 1) % items.length)
@@ -87,18 +111,22 @@ const CategoryCarousel = ({
     return "category-carousel-card-hidden";
   };
 
-  const handleMouseMove = (e) => {
+  // Manejo del Movimiento del Ratón (Throttle para rendimiento)
+  const updateSpotlightEffect = useCallback((e) => {
     const activeCard = carouselRef.current.querySelector('.category-carousel-card-active');
     if (!activeCard) return;
     const container = activeCard.querySelector('.category-card-container');
     if (!container) return;
+    
     const rect = container.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
     container.style.setProperty('--mouse-x', `${x}px`);
     container.style.setProperty('--mouse-y', `${y}px`);
-  };
+  }, []);
+
+  const throttledMouseMove = useRef(throttle(updateSpotlightEffect, 100)).current;
 
   if (!items || items.length === 0) {
     return (
@@ -109,7 +137,7 @@ const CategoryCarousel = ({
   }
 
   return (
-    <section className="category-carousel-section">
+    <section className="category-carousel-section" aria-label={title}>
       <div className="category-carousel-header">
         <h2 className="category-carousel-title">{title}</h2>
       </div>
@@ -120,17 +148,18 @@ const CategoryCarousel = ({
           style={{ height: `${cardHeight + 50}px` }}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          onMouseMove={handleMouseMove}
-          onTouchStart={isMobileSwipe ? onTouchStart : undefined}
-          onTouchMove={isMobileSwipe ? onTouchMove : undefined}
-          onTouchEnd={isMobileSwipe ? onTouchEnd : undefined}
+          onMouseMove={throttledMouseMove}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
           ref={carouselRef}
         >
-          <div className="category-carousel-track">
+          <div className="category-carousel-track" role="list">
             {items.map((item, index) => (
               <div
                 key={item.id || index}
                 className={`category-carousel-card ${getCardAnimationClass(index)}`}
+                role="listitem"
               >
                 <div 
                   className="category-card-container" 
@@ -167,13 +196,15 @@ const CategoryCarousel = ({
             </>
           )}
 
-          <div className="category-carousel-dots">
+          <div className="category-carousel-dots" role="tablist">
             {items.map((_, idx) => (
               <button
                 key={idx}
                 className={`category-carousel-dot ${active === idx ? 'category-carousel-dot-active' : ''}`}
                 onClick={() => setActive(idx)}
                 aria-label={`Ir a categoría ${idx + 1}`}
+                role="tab"
+                aria-selected={active === idx}
               />
             ))}
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,7 @@ import {
 import { Bar, Pie } from 'react-chartjs-2';
 import '../styles/Dashboard.css';
 
+// Registro de elementos de Chart.js necesarios para el dashboard
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,12 +23,23 @@ ChartJS.register(
   ArcElement
 );
 
+// Constantes de color para los gráficos, mejorando la mantenibilidad
+const STATE_COLORS = {
+  nuevo: { bg: 'rgba(255, 159, 64, 0.8)', border: 'rgba(255, 159, 64, 1)' },
+  en_revision: { bg: 'rgba(54, 162, 235, 0.8)', border: 'rgba(54, 162, 235, 1)' },
+  atendido: { bg: 'rgba(75, 192, 192, 0.8)', border: 'rgba(75, 192, 192, 1)' }
+};
+
+const CATEGORY_PALETTE = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+
 const Dashboard = () => {
   const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Cambiado a false ya que el fetch inicia en useEffect
   const [error, setError] = useState('');
 
+  // useEffect para la carga inicial de datos
   useEffect(() => {
+    setLoading(true); // Iniciar carga al montar
     const fetchReports = async () => {
       try {
         const res = await fetch('http://localhost:3001/reportes');
@@ -48,124 +60,112 @@ const Dashboard = () => {
     fetchReports();
   }, []);
 
-  // Cálculo de estadísticas
-  const statsByState = reports.reduce((acc, report) => {
+  // useMemo para memorizar el cálculo de estadísticas (optimización de rendimiento)
+  const statsByState = useMemo(() => reports.reduce((acc, report) => {
     acc[report.state] = (acc[report.state] || 0) + 1;
     return acc;
-  }, {});
+  }, {}), [reports]);
 
-  const statsByCategory = reports.reduce((acc, report) => {
-    const cat = report.category.replace(/_/g, ' ');
+  const statsByCategory = useMemo(() => reports.reduce((acc, report) => {
+    const cat = (report.category || 'Sin Categoría').replace(/_/g, ' ');
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
-  }, {});
+  }, {}), [reports]);
 
-  // Datos del gráfico para estados (Gráfico de barras)
-  const stateData = {
+  // useMemo para los datos del gráfico de estados
+  const stateData = useMemo(() => ({
     labels: ['Nuevos', 'En Revisión', 'Atendidos'],
-    datasets: [
-      {
-        label: 'Número de Reportes',
-        data: [
-          statsByState.nuevo || 0,
-          statsByState.en_revision || 0,
-          statsByState.atendido || 0
-        ],
-        backgroundColor: [
-          'rgba(255, 159, 64, 0.8)', // Naranja para nuevos
-          'rgba(54, 162, 235, 0.8)', // Azul para en revisión
-          'rgba(75, 192, 192, 0.8)'  // Verde para atendidos
-        ],
-        borderColor: [
-          'rgba(255, 159, 64, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
-        borderWidth: 1
-      }
-    ]
-  };
+    datasets: [{
+      label: 'Número de Reportes',
+      data: [
+        statsByState.nuevo || 0,
+        statsByState.en_revision || 0,
+        statsByState.atendido || 0
+      ],
+      backgroundColor: [
+        STATE_COLORS.nuevo.bg,
+        STATE_COLORS.en_revision.bg,
+        STATE_COLORS.atendido.bg
+      ],
+      borderColor: [
+        STATE_COLORS.nuevo.border,
+        STATE_COLORS.en_revision.border,
+        STATE_COLORS.atendido.border
+      ],
+      borderWidth: 1
+    }]
+  }), [statsByState]);
 
-  // Datos del gráfico para categorías (Gráfico circular)
-  const categoryData = {
+  // useMemo para los datos del gráfico de categorías
+  const categoryData = useMemo(() => ({
     labels: Object.keys(statsByCategory),
-    datasets: [
-      {
-        label: 'Reportes por Categoría',
-        data: Object.values(statsByCategory),
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40'
-        ],
-        hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40'
-        ]
-      }
-    ]
-  };
+    datasets: [{
+      label: 'Reportes por Categoría',
+      data: Object.values(statsByCategory),
+      // Usar slice para no exceder la paleta si hay más categorías
+      backgroundColor: CATEGORY_PALETTE.slice(0, Object.keys(statsByCategory).length),
+      hoverBackgroundColor: CATEGORY_PALETTE.slice(0, Object.keys(statsByCategory).length)
+    }]
+  }), [statsByCategory]);
 
   const options = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top'
-      },
-      title: {
-        display: true,
-        text: 'Estadísticas de Reportes'
-      }
+      legend: { position: 'top' },
+      title: { display: true, text: 'Estadísticas de Reportes' }
     }
   };
 
-const handleDeleteReport = async (id) => {
-  try {
-    const res = await fetch(`http://localhost:3001/reportes/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error(`Error deleting report: ${res.status}`);
-    const updatedReports = reports.filter(report => report.id !== id);
-    setReports(updatedReports);
-  } catch (error) {
-    console.error('Error deleting report:', error);
-    // Respaldo a localStorage
-    const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
-    const updatedReports = storedReports.filter(report => report.id !== id);
-    localStorage.setItem('reports', JSON.stringify(updatedReports));
-    setReports(updatedReports);
-  }
-};
+  // useCallback para funciones de interacción (eliminar reporte)
+  const handleDeleteReport = useCallback(async (id) => {
+    // BUENA PRÁCTICA: Pedir confirmación antes de eliminar
+    if (!window.confirm('¿Estás seguro de que quieres eliminar este reporte?')) {
+        return;
+    }
+    try {
+      const res = await fetch(`http://localhost:3001/reportes/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error(`Error deleting report: ${res.status}`);
+      const updatedReports = reports.filter(report => String(report.id) !== String(id));
+      setReports(updatedReports);
+    } catch (error) {
+      console.error('Error deleting report:', error);
+      // Respaldo a localStorage si la API falla
+      const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
+      const updatedReports = storedReports.filter(report => String(report.id) !== String(id));
+      localStorage.setItem('reports', JSON.stringify(updatedReports));
+      setReports(updatedReports);
+    }
+  }, [reports]);
 
-const handleUpdateState = async (id, newState) => {
-  try {
-    const res = await fetch(`http://localhost:3001/reportes/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ state: newState })
-    });
-    if (!res.ok) throw new Error(`Error updating report: ${res.status}`);
-    const updatedReports = reports.map(report => 
-      report.id === id ? { ...report, state: newState } : report
-    );
-    setReports(updatedReports);
-  } catch (error) {
-    console.error('Error updating report state:', error);
-    // Respaldo a localStorage
-    const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
-    const updatedReports = storedReports.map(report => 
-      report.id === id ? { ...report, state: newState } : report
-    );
-    localStorage.setItem('reports', JSON.stringify(updatedReports));
-    setReports(updatedReports);
-  }
-};
+  // useCallback para funcion de interaccion (actualizar estado)
+  const handleUpdateState = useCallback(async (id, newState) => {
+    try {
+      const res = await fetch(`http://localhost:3001/reportes/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ state: newState })
+      });
+      if (!res.ok) throw new Error(`Error updating report: ${res.status}`);
+      
+      // Obtener el reporte actualizado del servidor
+      const updatedReport = await res.json();
+      const updatedReports = reports.map(report => 
+        String(report.id) === String(id) ? updatedReport : report
+      );
+      setReports(updatedReports);
+    } catch (error) {
+      console.error('Error updating report state:', error);
+      // Respaldo a localStorage si la API falla
+      const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
+      const updatedReports = storedReports.map(report => 
+        String(report.id) === String(id) ? { ...report, state: newState } : report
+      );
+      localStorage.setItem('reports', JSON.stringify(updatedReports));
+      setReports(updatedReports);
+    }
+  }, [reports]);
 
+  // Estado de carga
   if (loading) {
     return (
       <div className="dashboard-container">
@@ -174,10 +174,11 @@ const handleUpdateState = async (id, newState) => {
     );
   }
 
-  if (error) {
+  // Estado de error (solo se muestra si no hay reportes de respaldo)
+  if (error && reports.length === 0) {
     return (
       <div className="dashboard-container">
-        <div className="error-message">Error: {error}</div>
+        <div className="error-message">Error crítico: {error}</div>
       </div>
     );
   }
@@ -225,9 +226,12 @@ const handleUpdateState = async (id, newState) => {
           {reports.slice(0, 5).map(report => (
             <div key={report.id} className="report-item">
               <h4>{report.title}</h4>
-              <p>{report.description.substring(0, 100)}...</p>
-              <p><strong>Estado:</strong> {report.state.replace(/_/g, ' ')}</p>
-              <p><strong>Fecha:</strong> {new Date(report.timestamp).toLocaleDateString()}</p>
+              <p>{(report.description || '').substring(0, 100)}...</p>
+              <p><strong>Estado:</strong> {(report.state || 'desconocido').replace(/_/g, ' ')}</p>
+              <p>
+                {/* Manejo de timestamp nulo para evitar fallos */}
+                <strong>Fecha:</strong> {report.timestamp ? new Date(report.timestamp).toLocaleDateString() : 'Fecha Desconocida'}
+              </p>
               <div className="state-buttons">
                 <button 
                   onClick={() => handleUpdateState(report.id, 'nuevo')} 
@@ -248,7 +252,12 @@ const handleUpdateState = async (id, newState) => {
                   Atendido
                 </button>
               </div>
-              <button onClick={() => handleDeleteReport(report.id)} className="delete-button">Eliminar</button>
+              <button 
+                onClick={() => handleDeleteReport(report.id)} 
+                className="delete-button"
+              >
+                Eliminar
+              </button>
             </div>
           ))}
         </div>

@@ -1,36 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X, MapPin, User, LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
 
+const enlaces = [
+  { id: 'inicio', nombre: 'Inicio', ruta: '/' },
+  { id: 'reportar', nombre: 'Reportar', ruta: '/reportCreate', icono: <MapPin size={16} />, protected: true },
+  { id: 'mapa', nombre: 'Mapa', ruta: '/mapview', protected: true },
+  { id: 'dashboard', nombre: 'Dashboard', ruta: '/dashboard', protected: true },
+];
+
 const Header = () => {
   const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('user'));
+    } catch (e) {
+      console.error("Error parsing user from localStorage", e);
+      return null;
+    }
+  });
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  useEffect(() => {
+    const handleUserChange = () => {
+      try {
+        setUser(JSON.parse(localStorage.getItem('user') || 'null'));
+      } catch (e) {
+        console.error("Error parsing user from localStorage", e);
+        setUser(null);
+      }
+    };
+
+    window.addEventListener('userChange', handleUserChange);
+    window.addEventListener('storage', handleUserChange); // for changes in other tabs
+
+    return () => {
+      window.removeEventListener('userChange', handleUserChange);
+      window.removeEventListener('storage', handleUserChange);
+    };
+  }, []);
+
+  // useCallback para funciones que se pasan a otros componentes (Cierre de Sesión)
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('user');
-    navigate('/');
-  };
+    // Forzar recarga o actualizar el estado global si existiera un contexto de usuario
+    window.location.reload(); 
+  }, []);
 
-  const toggleMenuMovil = () => setMenuMovilAbierto(!menuMovilAbierto);
-
-  const enlaces = [
-    { id: 'inicio', nombre: 'Inicio', ruta: '/' },
-    { id: 'reportar', nombre: 'Reportar', ruta: '/reportCreate', icono: <MapPin size={16} />, protected: true },
-    { id: 'mapa', nombre: 'Mapa', ruta: '/mapview', protected: true },
-    { id: 'dashboard', nombre: 'Dashboard', ruta: '/dashboard', protected: true },
-  ];
-
+  // Función de redirección para rutas protegidas
   const handleProtectedClick = () => {
-    alert('Debes crear una cuenta para reportar un problema');
+    // 4. Mejor UX: Redirigir a login en lugar de usar alert()
+    navigate('/login', { state: { from: window.location.pathname, message: 'Debes iniciar sesión para acceder a esta función.' } });
+    setMenuMovilAbierto(false);
   };
+  
+  // 5. Función de toggle simplificada
+  const toggleMenuMovil = () => setMenuMovilAbierto(p => !p);
 
   return (
     <header className="encabezado-sitio">
       <div className="contenedor-navbar">
-        <div className="identidad-sitio">
-          <NavLink to="/" className="logo-link" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="logo-sitio">
+          {/* 2. Eliminar estilos en línea simples del NavLink del logo */}
+          <NavLink to="/" className="logo-link"> 
             <h1 style={{ cursor: 'pointer' }}>ReporteVías CR</h1>
           </NavLink>
         </div>
@@ -43,8 +76,7 @@ const Header = () => {
                 {enlace.protected && !user ? (
                   <button
                     onClick={handleProtectedClick}
-                    className="enlace-nav"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    className="enlace-nav btn-reset" // 2. Usar clase utilitaria .btn-reset
                   >
                     {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
                     {enlace.nombre}
@@ -75,8 +107,7 @@ const Header = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="enlace-nav"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                    className="enlace-nav btn-reset" // 2. Usar clase utilitaria .btn-reset
                   >
                     <LogOut size={16} className="inline mr-1" />
                     Cerrar Sesión
@@ -97,22 +128,23 @@ const Header = () => {
         </nav>
 
         {/* Botón menú móvil */}
-        <button onClick={toggleMenuMovil} className="boton-menu-movil">
+        <button onClick={toggleMenuMovil} className="boton-menu-movil" aria-expanded={menuMovilAbierto} aria-controls="menu-movil-container">
           {menuMovilAbierto ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Menú móvil */}
       {menuMovilAbierto && (
-        <div className="menu-movil">
+        <div className="menu-movil" id="menu-movil-container">
           <nav className="navegacion-movil">
+            {/* Lógica duplicada: idealmente se extrae en un componente */}
             {enlaces.map(enlace => (
               enlace.protected && !user ? (
                 <button
                   key={enlace.id}
-                  onClick={() => { handleProtectedClick(); setMenuMovilAbierto(false); }}
-                  className="enlace-movil"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                  onClick={() => { handleProtectedClick(); }} // handleProtectedClick ya cierra el menú
+                  className="enlace-movil btn-reset"
+                  style={{ width: '100%', textAlign: 'left' }} 
                 >
                   {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
                   {enlace.nombre}
@@ -142,8 +174,8 @@ const Header = () => {
                 </NavLink>
                 <button
                   onClick={handleLogout}
-                  className="enlace-movil boton-login-movil"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left' }}
+                  className="enlace-movil boton-login-movil btn-reset"
+                  style={{ width: '100%', textAlign: 'left' }}
                 >
                   <LogOut size={16} className="inline mr-2" />
                   Cerrar Sesión

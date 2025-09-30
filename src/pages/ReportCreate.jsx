@@ -3,7 +3,7 @@ import ReportForm from '../components/ReportForm'
 
 function ReportCreate() {
   return (
-    <div className="report-create-page">
+    <div className="page-content-offset report-create-page">
       <ReportForm />
     </div>
   )

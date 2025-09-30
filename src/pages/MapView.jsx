@@ -1,10 +1,10 @@
 import React from 'react';
-import MapView from '../components/MapView';
+import MapViewForm from '../components/MapViewForm';
 
 function MapViewPage() {
   return (
-    <div>
-      <MapView />
+    <div className="page-content-offset">
+      <MapViewForm />
     </div>
   );
 }

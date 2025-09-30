@@ -4,7 +4,11 @@ import '../styles/Dashboard.css';
 
 
 const DashboardPage = () => {
-  return <Dashboard />;
+  return (
+    <div className="page-content-offset">
+      <Dashboard />
+    </div>
+  );
 };
 
 export default DashboardPage;

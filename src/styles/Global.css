@@ -1,0 +1,12 @@
+.report-create-page {
+  padding-top: 60px; /* to offset the fixed header height */
+}
+
+main {
+  padding-top: 80px !important; /* increased padding to offset the fixed header height */
+  box-sizing: border-box;
+}
+
+.page-content-offset {
+  padding-top: 60px;
+}
