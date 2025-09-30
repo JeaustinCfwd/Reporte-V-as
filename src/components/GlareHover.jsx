@@ -1,5 +1,10 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import '../styles/GlareHover.css';
+
+// Constantes para regex (optimización - evita recrearlas)
+const SHORTHAND_REGEX = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+const HEX_REGEX = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
 
 // Función auxiliar para convertir hex/rgb a rgba de forma robusta
 const hexToRgba = (hex, opacity) => {
@@ -7,10 +12,9 @@ const hexToRgba = (hex, opacity) => {
     if (hex.startsWith('rgb')) return hex.replace(')', `, ${opacity})`).replace('rgb', 'rgba');
     if (!hex.startsWith('#')) hex = `#${hex}`;
 
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+    hex = hex.replace(SHORTHAND_REGEX, (m, r, g, b) => r + r + g + g + b + b);
 
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    const result = HEX_REGEX.exec(hex);
     
     // Devolver rgba o un fallback seguro si el color no es un hex válido
     return result ? 
@@ -76,6 +80,24 @@ const GlareHover = ({
       {children}
     </div>
   );
+};
+
+// Validación de PropTypes para mejorar documentación y detección de errores
+GlareHover.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
+  background: PropTypes.string,
+  borderRadius: PropTypes.string,
+  borderColor: PropTypes.string,
+  children: PropTypes.node,
+  glareColor: PropTypes.string,
+  glareOpacity: PropTypes.number,
+  glareAngle: PropTypes.number,
+  glareSize: PropTypes.number,
+  transitionDuration: PropTypes.number,
+  playOnce: PropTypes.bool,
+  className: PropTypes.string,
+  style: PropTypes.object
 };
 
 export default GlareHover;

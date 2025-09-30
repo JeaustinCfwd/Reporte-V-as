@@ -42,10 +42,12 @@
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
-  display: flex; /* Added to align content */
-  align-items: center; /* Added for vertical alignment */
-  height: 100%; /* Ensure full height for alignment */
-  padding: 8px 14px; /* Added padding to match boton-login */
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 8px 14px;
+  background: none;
+  border: none;
 }
 
 .enlace-nav:hover {
@@ -54,6 +56,49 @@
 
 .enlace-nav.activo {
   border-bottom: 2px solid #00bcd4;
+}
+
+/* Estilo especial para el botón de Iniciar Sesión */
+.enlace-nav.boton-login {
+  background-color: #FFFFFF;
+  border: 0;
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin: 0;
+}
+
+.enlace-nav.boton-login:hover {
+  background-color: rgb(249, 250, 251);
+}
+
+.enlace-nav.boton-login:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.enlace-nav.boton-login:focus-visible {
+  box-shadow: none;
+}
+
+.enlace-nav.boton-login.activo {
+  border-bottom: none;
 }
 
 /* Botón menú móvil */

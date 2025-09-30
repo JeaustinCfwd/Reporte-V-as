@@ -107,7 +107,7 @@ const Header = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="enlace-nav btn-reset" // 2. Usar clase utilitaria .btn-reset
+                    className="enlace-nav btn-reset"
                   >
                     <LogOut size={16} className="inline mr-1" />
                     Cerrar Sesión
@@ -118,7 +118,7 @@ const Header = () => {
               <li>
                 <NavLink
                   to="/login"
-                  className={({ isActive }) => `enlace-nav ${isActive ? 'activo' : ''}`}
+                  className={({ isActive }) => `enlace-nav boton-login ${isActive ? 'activo' : ''}`}
                 >
                   Iniciar Sesión
                 </NavLink>
