@@ -7,6 +7,13 @@
       "email": "jeaustincalu03@gmail.com",
       "password": "1234aaenckjndc",
       "photo": ""
+    },
+    {
+      "id": "e41c",
+      "name": "lucas",
+      "email": "example123@gmail.com",
+      "password": "1234ab",
+      "photo": ""
     }
   ],
   "reviews": []

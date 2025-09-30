@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StarSelector from './StarSelector';
 import RatingSummary from './RatingSummary';
-import { getReviews, postReview } from '../services/fetch.js';
+import { getReviews, postReview, deleteReview } from '../services/fetch.js';
 import '../styles/RatingBox.css';
 
 const RatingBox = () => {
@@ -60,12 +60,30 @@ const RatingBox = () => {
 
   const deleteComment = async (id) => {
     if (!user) return;
+    
     const review = reviews.find(r => r.id === id);
-    if (review && review.userId === user.id) {
-      // Por simplicidad, filtrar (en app real, DELETE /reviews/:id)
+    if (!review || review.userId !== user.id) {
+      alert('No tienes permiso para eliminar esta reseña');
+      return;
+    }
+
+    // Confirmar antes de eliminar
+    if (!window.confirm('¿Estás seguro de que quieres eliminar esta reseña?')) {
+      return;
+    }
+
+    try {
+      // Eliminar del backend
+      await deleteReview(id);
+      
+      // Actualizar estado local solo si la eliminación fue exitosa
       const filteredReviews = reviews.filter(r => r.id !== id);
       setReviews(filteredReviews);
-      // Actualizar backend si es necesario
+      
+      alert('Reseña eliminada exitosamente');
+    } catch (error) {
+      console.error('Error eliminando reseña:', error);
+      alert('Error al eliminar la reseña. Inténtalo de nuevo.');
     }
   };
 

@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ThreeDCarousel from './ThreeDCarousel';
 import CategoryCarousel from './CategoryCarousel';
 import GlareHover from './GlareHover';
 import RatingBox from './RatingBox';
+import CountUp from './CountUp';
 import '../styles/Home.css';
 
 const carouselItems = [
   {
     id: 1,
-    title: "Reporta Fácilmente",
     brand: "PASO 1",
     description: "Toma fotos, describe el problema y marca la ubicación. Todo en menos de 2 minutos desde tu móvil.",
     tags: ["Móvil", "Fotos", "2 minutos"],
@@ -65,6 +65,35 @@ const categoryCarouselItems = [
 
 
 function HomeContent() {
+  const [reportesResueltos, setReportesResueltos] = useState(0);
+  const [totalReportes, setTotalReportes] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEstadisticas = async () => {
+      try {
+        const res = await fetch('http://localhost:3001/reportes');
+        if (res.ok) {
+          const reportes = await res.json();
+          const atendidos = reportes.filter(r => r.state === 'atendido').length;
+          setReportesResueltos(atendidos);
+          setTotalReportes(reportes.length);
+        }
+      } catch (error) {
+        console.error('Error cargando estadísticas:', error);
+        // Fallback a localStorage si falla la API
+        const storedReports = JSON.parse(localStorage.getItem('reports') || '[]');
+        const atendidos = storedReports.filter(r => r.state === 'atendido').length;
+        setReportesResueltos(atendidos);
+        setTotalReportes(storedReports.length);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEstadisticas();
+  }, []);
+
   return (
     <div className="contenedor-inicio">
       <div className="seccion-hero">
@@ -94,7 +123,9 @@ function HomeContent() {
       <div className="seccion-info">
         <div className="contenedor-estadisticas">
           <div className="estadistica">
-            <h3>1,247</h3>
+            <h3>
+              {loading ? '...' : <CountUp end={reportesResueltos} duration={2500} />}
+            </h3>
             <p>Reportes Resueltos</p>
           </div>
           <div className="estadistica">

@@ -139,5 +139,22 @@ export async function postReview(reviewData) {
   }
 }
 
+export async function deleteReview(id) {
+  try {
+    const res = await fetch(`http://localhost:3001/reviews/${id}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error(`Error eliminando reseña: ${res.status}`);
+    return true;
+  } catch (error) {
+    console.error('Error eliminando reseña:', error);
+    // Respaldo a localStorage
+    const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+    const filteredReviews = reviews.filter(r => r.id !== id);
+    localStorage.setItem('reviews', JSON.stringify(filteredReviews));
+    return true;
+  }
+}
+
 
 

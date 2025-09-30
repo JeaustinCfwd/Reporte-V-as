@@ -1,82 +1,162 @@
+/* Footer Container - Fondo Negro Profundo */
 .footer-container {
-  background-color: #2c3e50; /* Fondo oscuro */
-  color: #ecf0f1; /* Texto claro */
-  padding: 40px 20px;
-  font-family: 'Arial', sans-serif;
-  margin-top: auto; /* Empujar hacia abajo si es necesario */
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  padding: 40px 20px 20px;
+  margin-top: auto;
 }
 
-.footer-content {
+/* Sección Principal de Enlaces */
+.footer-main {
   max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 30px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  text-align: left;
+}
+
+/* Logo */
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0 0 8px 0;
+}
+
+.footer-slogan {
+  font-size: 0.875rem;
+  color: #AAAAAA;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Headings de Columnas */
+.footer-heading {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0 0 15px 0;
+  letter-spacing: 0.5px;
+}
+
+/* Links */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.footer-links a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 400;
+  transition: opacity 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-links a:hover {
+  opacity: 0.7;
+}
+
+.footer-links .inline {
+  vertical-align: middle;
+}
+
+/* Divider - Línea Divisoria */
+.footer-divider {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 1px;
+  background-color: #333333;
+}
+
+/* Sección Inferior - Social y Copyright */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 30px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
 }
 
-.footer-content h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  color: #3498db; /* Color de acento */
-}
-
-.footer-content p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.footer-contact,
-.footer-objective {
-  flex: 1;
-  min-width: 250px;
-}
-
-.footer-contact h3,
-.footer-objective h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: #ecf0f1;
-}
-
-.social-logos {
+/* Iconos Sociales */
+.footer-social {
   display: flex;
   gap: 15px;
-  margin-top: 10px;
-  list-style: none;
-  padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 
-.social-logos a {
-  color: #ecf0f1;
+.social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+  background: transparent;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.social-logos a:hover {
-  color: #3498db;
+.social-icon:hover {
+  opacity: 0.7;
+  transform: translateY(-2px);
 }
 
+/* Copyright */
 .footer-copyright {
+  font-size: 0.75rem;
+  color: #AAAAAA;
   text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #34495e;
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #bdc3c7;
+  margin: 0;
+  font-weight: 400;
 }
 
-/* Diseño responsivo */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .footer-logo {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
     text-align: center;
   }
-
-  .social-logos {
-    justify-content: center;
+  
+  .footer-links {
+    text-align: center;
+  }
+  
+  .footer-container {
+    padding: 30px 15px 15px;
   }
 }
