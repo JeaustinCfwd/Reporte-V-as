@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Camera, Trash2, LogOut, Settings, Shield, Eye, EyeOff } from 'lucide-react';
-import { updateUser, deleteUser } from '../services/fetch.js';
+import { updateUser, deleteUser, getUserPhoto } from '../services/fetch.js';
 import "../styles/Profile.css";
 
 const ProfileEdit = () => {
@@ -28,7 +28,9 @@ const ProfileEdit = () => {
         password: '',
         confirmPassword: ''
       });
-      setPhotoPreview(storedUser.photo || '');
+      // Obtener la foto desde localStorage separado
+      const userPhoto = getUserPhoto(storedUser.id);
+      setPhotoPreview(userPhoto || '');
     } else {
       navigate('/login');
     }
@@ -108,30 +110,9 @@ const ProfileEdit = () => {
   if (!user) return <div className="profile-loading">Cargando...</div>;
 
   return (
-    <div className="profile-container">
-      {/* Sidebar de Navegación */}
-      <aside className="profile-sidebar">
-        <div className="sidebar-section">
-          <h3 className="sidebar-category">TU CUENTA</h3>
-          <nav className="sidebar-nav">
-            <a href="/profile" className="sidebar-link active">
-              <User size={18} />
-              Editar Perfil
-            </a>
-          </nav>
-        </div>
-        
-        <div className="sidebar-section">
-          <button onClick={handleLogout} className="sidebar-link sidebar-logout">
-            <LogOut size={18} />
-            Cerrar Sesión
-          </button>
-        </div>
-      </aside>
-
-      {/* Contenido Principal */}
-      <main className="profile-content">
-        <h1 className="profile-title">Editar Perfil</h1>
+    <div className="profile-content">
+      <h1 className="profile-title">Editar Perfil</h1>
+      <p className="profile-subtitle">Actualiza tu información personal</p>
 
         <form onSubmit={handleSubmit} className="profile-form">
           {/* Foto de Perfil */}
@@ -207,63 +188,6 @@ const ProfileEdit = () => {
             </div>
           </div>
 
-          {/* Sección de Cambiar Contraseña */}
-          <div className="form-section-divider">
-            <h2 className="form-section-title">Cambiar Contraseña</h2>
-          </div>
-
-          {/* Nueva Contraseña */}
-          <div className="form-row">
-            <label htmlFor="password" className="form-label">Nueva Contraseña</label>
-            <div className="form-field">
-              <div className="password-input-wrapper">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  placeholder="••••••"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="form-input"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="password-toggle-btn"
-                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Confirmar Contraseña */}
-          <div className="form-row">
-            <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña</label>
-            <div className="form-field">
-              <div className="password-input-wrapper">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirmar nueva contraseña"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className="form-input"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="password-toggle-btn"
-                  aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-          </div>
-
           {/* Botones de Acción */}
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
@@ -280,7 +204,6 @@ const ProfileEdit = () => {
             </button>
           </div>
         </form>
-      </main>
     </div>
   );
 };

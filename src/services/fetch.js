@@ -32,13 +32,22 @@ export async function obtenerDatosEstadisticos() {
 
 export async function registerUser(userData) {
   try {
+    // Separar la foto del resto de datos
+    const { photo, ...userDataWithoutPhoto } = userData;
+    
     const res = await fetch('http://localhost:3001/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
+      body: JSON.stringify({ ...userDataWithoutPhoto, photo: '' }) // Solo guardar ruta vacía
     });
     if (!res.ok) throw new Error(`Error registrando: ${res.status}`);
     const user = await res.json();
+    
+    // Si hay foto, guardarla en localStorage
+    if (photo) {
+      localStorage.setItem(`image_${user.id}`, photo);
+    }
+    
     return user;
   } catch (error) {
     console.error('Error registrando usuario:', error);
@@ -47,6 +56,12 @@ export async function registerUser(userData) {
     const newUser = { id: Date.now(), ...userData, photo: '' };
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
+    
+    // Guardar foto por separado
+    if (userData.photo) {
+      localStorage.setItem(`image_${newUser.id}`, userData.photo);
+    }
+    
     return newUser;
   }
 }
@@ -69,13 +84,26 @@ export async function loginUser(email, password) {
 
 export async function updateUser(id, userData) {
   try {
+    // Separar la foto del resto de datos
+    const { photo, ...userDataWithoutPhoto } = userData;
+    
     const res = await fetch(`http://localhost:3001/users/${id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(userDataWithoutPhoto) // No enviar la foto al servidor
     });
     if (!res.ok) throw new Error(`Error actualizando usuario: ${res.status}`);
     const user = await res.json();
+    
+    // Si hay foto, actualizarla en localStorage
+    if (photo !== undefined) {
+      if (photo) {
+        localStorage.setItem(`image_${id}`, photo);
+      } else {
+        localStorage.removeItem(`image_${id}`);
+      }
+    }
+    
     return user;
   } catch (error) {
     console.error('Error actualizando usuario:', error);
@@ -83,8 +111,19 @@ export async function updateUser(id, userData) {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const index = users.findIndex(u => u.id === id);
     if (index !== -1) {
-      users[index] = { ...users[index], ...userData };
+      const { photo, ...userDataWithoutPhoto } = userData;
+      users[index] = { ...users[index], ...userDataWithoutPhoto };
       localStorage.setItem('users', JSON.stringify(users));
+      
+      // Actualizar foto por separado
+      if (photo !== undefined) {
+        if (photo) {
+          localStorage.setItem(`image_${id}`, photo);
+        } else {
+          localStorage.removeItem(`image_${id}`);
+        }
+      }
+      
       return users[index];
     }
     return null;
@@ -95,14 +134,36 @@ export async function deleteUser(id) {
   try {
     const res = await fetch(`http://localhost:3001/users/${id}`, { method: 'DELETE' });
     if (!res.ok) throw new Error(`Error eliminando usuario: ${res.status}`);
+    
+    // Eliminar también la foto
+    localStorage.removeItem(`image_${id}`);
+    
     return true;
   } catch (error) {
     console.error('Error eliminando usuario:', error);
     // Respaldo a localStorage
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const filtered = users.filter(u => u.id !== id);
-    localStorage.setItem('users', JSON.stringify(filtered));
+    const filteredUsers = users.filter(u => u.id !== id);
+    localStorage.setItem('users', JSON.stringify(filteredUsers));
+    
+    // Eliminar también la foto
+    localStorage.removeItem(`image_${id}`);
+    
     return true;
+  }
+}
+
+/**
+ * Obtiene la foto de perfil de un usuario desde localStorage
+ * @param {string} userId - ID del usuario
+ * @returns {string|null} - Base64 de la imagen o null
+ */
+export function getUserPhoto(userId) {
+  try {
+    return localStorage.getItem(`image_${userId}`);
+  } catch (error) {
+    console.warn('No se pudo recuperar la foto del usuario:', error);
+    return null;
   }
 }
 

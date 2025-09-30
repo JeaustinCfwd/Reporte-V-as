@@ -1,158 +1,253 @@
+/* DataVisualizationWidget Design System */
 .container {
-  font-family: Arial;
-  max-width: 800px;
+  font-family: 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px;
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .heading {
-  font-size: 25px;
-  margin-right: 25px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #212121;
+  margin: 0 0 8px 0;
 }
 
-.stars .star {
-  font-size: 25px;
-  cursor: pointer;
-  color: #ddd;
+.container > p {
+  font-size: 0.95rem;
+  color: #666666;
+  margin: 0 0 24px 0;
 }
 
-.stars .star.checked {
-  color: orange;
+/* Rating Summary Container */
+.rating-summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
 }
 
-.checked {
-  color: orange;
+/* Rating Bar Row */
+.rating-bar-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 50px;
+  gap: 15px;
+  align-items: center;
+}
+
+.rating-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #212121;
+  font-weight: 500;
+}
+
+.star-count {
+  font-weight: 600;
+  color: #212121;
+}
+
+.rating-bar-container {
+  height: 10px;
+  background-color: #E0E0E0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rating-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.rating-bar-count {
+  font-size: 0.9rem;
+  color: #666666;
+  text-align: right;
+  font-weight: 500;
 }
 
 .separator {
-  border: 3px solid #f1f1f1;
+  border: none;
+  border-top: 1px solid #E0E0E0;
+  margin: 30px 0;
 }
 
-.row::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.side {
-  float: left;
-  width: 15%;
-  margin-top: 10px;
-}
-
-.middle {
-  float: left;
-  width: 70%;
-  margin-top: 10px;
-}
-
-.right {
-  text-align: right;
-}
-
-.barContainer {
-  width: 100%;
-  background-color: #f1f1f1;
-  height: 18px;
-}
-
-.bar5 { background-color: #04AA6D; height: 18px; }
-.bar4 { background-color: #2196F3; height: 18px; }
-.bar3 { background-color: #00bcd4; height: 18px; }
-.bar2 { background-color: #ff9800; height: 18px; }
-.bar1 { background-color: #f44336; height: 18px; }
-
+/* Buttons */
 .rate-button {
-  background-color: #007bff;
+  background-color: #00C853;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 8px;
   margin: 10px 0;
+  transition: background-color 0.2s ease;
 }
 
 .rate-button:hover {
-  background-color: #0056b3;
+  background-color: #00A844;
 }
 
+/* Rating Form */
 .rating-form {
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #000;
+  border: 1px solid #E0E0E0;
+  padding: 24px;
+  margin: 24px 0;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .rating-form h3 {
-  color: #000;
-}
-
-.rating-form textarea {
-  background-color: #fff;
-  color: #000;
-}
-
-.form-buttons button {
-  color: #fff;
-}
-
-.rating-form h3 {
-  margin-top: 0;
+  color: #212121;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 20px 0;
 }
 
 .rating-form textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
   resize: vertical;
-  font-family: Arial;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #212121;
+  background-color: #FFFFFF;
+  transition: border-color 0.2s ease;
+}
+
+.rating-form textarea:focus {
+  outline: none;
+  border-color: #00C853;
 }
 
 .form-buttons {
-  margin-top: 10px;
-  text-align: right;
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 .form-buttons button {
-  margin-left: 10px;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .form-buttons button:first-child {
-  background-color: #28a745;
+  background-color: #00C853;
   color: white;
 }
 
-.form-buttons button:first-child:hover {
-  background-color: #218838;
+.form-buttons button:first-child:hover:not(:disabled) {
+  background-color: #00A844;
 }
 
 .form-buttons button:last-child {
-  background-color: #6c757d;
-  color: white;
+  background-color: #E0E0E0;
+  color: #666666;
 }
 
 .form-buttons button:last-child:hover {
-  background-color: #545b62;
+  background-color: #CCCCCC;
 }
 
 .form-buttons button:disabled {
-  background-color: #ccc;
+  background-color: #E0E0E0;
+  color: #999999;
   cursor: not-allowed;
 }
 
-@media (max-width: 400px) {
-  .side, .middle {
-    width: 100%;
+/* Comments Section */
+.comments-section {
+  margin-top: 40px;
+}
+
+.comments-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212121;
+  margin: 0 0 20px 0;
+}
+
+.comment {
+  padding: 16px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #FFFFFF;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.comment-header span {
+  color: #00C853;
+  font-size: 1rem;
+}
+
+.comment-header strong {
+  color: #212121;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.comment p {
+  color: #212121;
+  font-size: 0.95rem;
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.comment small {
+  color: #666666;
+  font-size: 0.85rem;
+}
+
+.delete-button {
+  margin-left: auto;
+  padding: 6px 12px;
+  background-color: #FF4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #DD3333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 24px;
   }
-  .right {
-    display: none;
+  
+  .rating-bar-row {
+    grid-template-columns: 50px 1fr 40px;
+    gap: 10px;
   }
 }

@@ -1,10 +1,27 @@
 import React from 'react'
 import RegisterForm from '../components/RegisterForm'
+import Plasma from '../components/Plasma'
 
 function Register() {
   return (
-    <div>
-      <RegisterForm />
+    <div style={{ 
+      position: 'relative', 
+      minHeight: 'calc(100vh - 60px)', 
+      width: '100%', 
+      overflow: 'hidden',
+      isolation: 'isolate'
+    }}>
+      <Plasma 
+        color="#1a1a2e"
+        speed={0.4}
+        direction="forward"
+        scale={1.2}
+        opacity={1}
+        mouseInteractive={false}
+      />
+      <div style={{ position: 'relative', zIndex: 1, minHeight: 'inherit' }}>
+        <RegisterForm />
+      </div>
     </div>
   )
 }

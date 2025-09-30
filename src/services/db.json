@@ -13,11 +13,11 @@
   ],
   "users": [
     {
-      "id": "d3f4",
-      "name": "martin",
+      "name": "Jeaustin",
       "email": "jeaustincalu03@gmail.com",
       "password": "1234aaenckjndc",
-      "photo": ""
+      "photo": "",
+      "id": "d3f4"
     },
     {
       "name": "lucas",
@@ -27,5 +27,14 @@
       "id": "e41c"
     }
   ],
-  "reviews": []
+  "reviews": [
+    {
+      "id": "f7cf",
+      "userId": "e41c",
+      "userName": "lucas",
+      "rating": 4,
+      "comment": "muy bueno el sitio",
+      "timestamp": "2025-09-30T21:22:40.547Z"
+    }
+  ]
 }
