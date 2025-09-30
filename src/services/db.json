@@ -1,5 +1,16 @@
 {
-  "reportes": [],
+  "reportes": [
+    {
+      "id": "1759244221322",
+      "title": "Otro",
+      "description": "prueba ",
+      "lat": 9.8903185,
+      "lng": -84.0755289,
+      "state": "nuevo",
+      "category": "otro",
+      "timestamp": "2025-09-30T14:57:01.322Z"
+    }
+  ],
   "users": [
     {
       "id": "d3f4",

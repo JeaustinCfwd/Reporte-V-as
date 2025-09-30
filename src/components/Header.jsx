@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X, MapPin, User, LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
+import ShinyText from './ShinyText';
 
 const enlaces = [
   { id: 'inicio', nombre: 'Inicio', ruta: '/' },
@@ -33,7 +34,7 @@ const Header = () => {
     };
 
     window.addEventListener('userChange', handleUserChange);
-    window.addEventListener('storage', handleUserChange); // for changes in other tabs
+    window.addEventListener('storage', handleUserChange);
 
     return () => {
       window.removeEventListener('userChange', handleUserChange);
@@ -64,7 +65,9 @@ const Header = () => {
         <div className="logo-sitio">
           {/* 2. Eliminar estilos en línea simples del NavLink del logo */}
           <NavLink to="/" className="logo-link"> 
-            <h1 style={{ cursor: 'pointer' }}>ReporteVías CR</h1>
+            <h1 style={{ cursor: 'pointer' }}>
+              <ShinyText text="ReporteVías CR" speed={3} />
+            </h1>
           </NavLink>
         </div>
 

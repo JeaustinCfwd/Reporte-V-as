@@ -5,6 +5,7 @@ import CategoryCarousel from './CategoryCarousel';
 import GlareHover from './GlareHover';
 import RatingBox from './RatingBox';
 import CountUp from './CountUp';
+import Prism from './Prism';
 import '../styles/Home.css';
 
 const carouselItems = [
@@ -13,7 +14,7 @@ const carouselItems = [
     brand: "PASO 1",
     description: "Toma fotos, describe el problema y marca la ubicación. Todo en menos de 2 minutos desde tu móvil.",
     tags: ["Móvil", "Fotos", "2 minutos"],
-    imageUrl: "/images/paso1-mobile.jpg", 
+    imageUrl: "/src/assets/images/Carrusel-uno.png", 
     link: "#"
   },
   {
@@ -22,7 +23,7 @@ const carouselItems = [
     brand: "PASO 2", 
     description: "Recibe notificaciones sobre el progreso de tu reporte: nuevo, en revisión y atendido.",
     tags: ["Notificaciones", "Progreso", "Estados"],
-    imageUrl: "/images/paso2-seguimiento.jpg", 
+    imageUrl: "/src/assets/images/Carrusel-dos.png", 
     link: "#"
   },
   {
@@ -31,7 +32,7 @@ const carouselItems = [
     brand: "PASO 3",
     description: "Ve cómo tus reportes contribuyen al mejoramiento real de la infraestructura urbana.",
     tags: ["Mejoras", "Infraestructura", "Impacto"],
-    imageUrl: "/images/paso3-impacto.jpg", 
+    imageUrl: "/src/assets/images/Carrusel-tres.png", 
     link: "#"
   }
 ];
@@ -97,6 +98,17 @@ function HomeContent() {
   return (
     <div className="contenedor-inicio">
       <div className="seccion-hero">
+        <Prism
+          animationType="rotate"
+          timeScale={0.5}
+          height={3.5}
+          baseWidth={5.5}
+          scale={2.5}
+          hueShift={0}
+          colorFrequency={1}
+          noise={0.5}
+          glow={1.2}
+        />
         <h2 className="titulo-principal">Transforma tu ciudad con cada reporte</h2>
         <p className="descripcion-inicio">
           ReportaVías CR conecta a la comunidad con las autoridades para crear ciudades más seguras y funcionales. Tu voz importa, tu reporte cuenta.
@@ -163,15 +175,45 @@ function HomeContent() {
               playOnce={false}
             >
               <div className="dashboard-info-content"> 
-                <h2 className="titulo-dashboard">
+                <h2 className="titulo-dashboard" style={{ color: '#ffffff' }}>
                   Dashboard Administrativo
                 </h2>
                 <ul className="lista-caracteristicas">
-                  <li className="item-caracteristica">✓ Vista de todos los reportes en tiempo real</li>
-                  <li className="item-caracteristica">✓ Filtros por estado, categoría y fecha</li>
-                  <li className="item-caracteristica">✓ Mapa interactivo con marcadores</li>
-                  <li className="item-caracteristica">✓ Estadísticas y métricas detalladas</li>
-                  <li className="item-caracteristica">✓ Gestión de estados de reportes</li>
+                  <li className="item-caracteristica">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', flexShrink: 0 }}>
+                      <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/>
+                      <path d="m9 11 3 3L22 4"/>
+                    </svg>
+                    Vista de todos los reportes en tiempo real
+                  </li>
+                  <li className="item-caracteristica">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', flexShrink: 0 }}>
+                      <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/>
+                      <path d="m9 11 3 3L22 4"/>
+                    </svg>
+                    Filtros por estado, categoría y fecha
+                  </li>
+                  <li className="item-caracteristica">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', flexShrink: 0 }}>
+                      <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/>
+                      <path d="m9 11 3 3L22 4"/>
+                    </svg>
+                    Mapa interactivo con marcadores
+                  </li>
+                  <li className="item-caracteristica">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', flexShrink: 0 }}>
+                      <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/>
+                      <path d="m9 11 3 3L22 4"/>
+                    </svg>
+                    Estadísticas y métricas detalladas
+                  </li>
+                  <li className="item-caracteristica">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', flexShrink: 0 }}>
+                      <path d="M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344"/>
+                      <path d="m9 11 3 3L22 4"/>
+                    </svg>
+                    Gestión de estados de reportes
+                  </li>
                 </ul>
               </div>
             </GlareHover>
