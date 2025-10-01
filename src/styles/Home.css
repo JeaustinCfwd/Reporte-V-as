@@ -386,3 +386,11 @@
 .dashboard-info-content {
   padding: 1rem;
 }
+
+/* Sección RatingBox */
+.seccion-ratingbox {
+  background: white;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 2;
+}
