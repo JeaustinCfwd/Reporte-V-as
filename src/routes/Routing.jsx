@@ -14,6 +14,7 @@ import ReportCreate from '../pages/ReportCreate';
 import MapView from '../pages/MapView';
 import Dashboard from '../pages/Dashboard';
 import Profile from '../pages/Profile';
+import ReportDetail from '../pages/ReportDetail';
 
 import PrivateRoute from './PrivateRoute';
 const router = createBrowserRouter(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         { path: 'reportCreate', element: <PrivateRoute><ReportCreate /></PrivateRoute> },
         { path: 'mapview', element: <PrivateRoute><MapView /></PrivateRoute> },
         { path: 'dashboard', element: <PrivateRoute><Dashboard /></PrivateRoute> },
+        { path: 'report/:id', element: <PrivateRoute><ReportDetail /></PrivateRoute> },
         { path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
       ],
     },

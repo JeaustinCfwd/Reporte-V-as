@@ -2,10 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/fetch.js';
+import { useToast } from '../contexts/ToastContext';
 import "../styles/Forms.css";
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const { success, error: showError } = useToast();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -36,6 +38,7 @@ const LoginForm = () => {
         // Validación simple antes de enviar (buena práctica de UX)
         if (!formData.email.includes('@') || formData.password.length < 6) {
             setError('Formato de correo inválido o contraseña muy corta.');
+            showError('Formato de correo inválido o contraseña muy corta');
             return;
         }
 
@@ -47,14 +50,17 @@ const LoginForm = () => {
                 // Almacenamiento y redirección: idealmente, esto lo gestiona un Contexto Global (AuthContext)
                 localStorage.setItem('user', JSON.stringify(user));
                 window.dispatchEvent(new Event('userChange'));
+                success(`¡Bienvenido ${user.name}!`);
                 navigate('/dashboard');
             } else {
                 setError('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
+                showError('Credenciales inválidas. Verifica tu correo y contraseña');
                 // Limpiar solo la contraseña si falla el intento
                 setFormData(prev => ({ ...prev, password: '' })); 
             }
         } catch {
             setError('Error al iniciar sesión. Inténtalo de nuevo más tarde.'); 
+            showError('Error al iniciar sesión. Inténtalo de nuevo más tarde');
             // Limpiar solo la contraseña si falla el intento
             setFormData(prev => ({ ...prev, password: '' })); 
         } finally {

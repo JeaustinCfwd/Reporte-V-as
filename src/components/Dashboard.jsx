@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '../contexts/ToastContext';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -63,6 +65,8 @@ const STATE_COLORS = {
 const CATEGORY_PALETTE = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const { success, error: showError, info } = useToast();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -222,12 +226,12 @@ const Dashboard = () => {
       const res = await fetch(`http://localhost:3001/reportes/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`Error deleting report: ${res.status}`);
       setReports(reports.filter(report => String(report.id) !== String(id)));
-      alert('Reporte eliminado exitosamente');
+      success('Reporte eliminado exitosamente');
     } catch (error) {
       console.error('Error deleting report:', error);
-      alert('Error al eliminar el reporte');
+      showError('Error al eliminar el reporte');
     }
-  }, [reports]);
+  }, [reports, success, showError]);
 
   const handleUpdateState = useCallback(async (id, newState) => {
     try {
@@ -242,41 +246,48 @@ const Dashboard = () => {
       setReports(reports.map(report => 
         String(report.id) === String(id) ? updatedReport : report
       ));
+      success('Estado actualizado correctamente');
     } catch (error) {
       console.error('Error updating report state:', error);
-      alert('Error al actualizar el estado');
+      showError('Error al actualizar el estado');
     }
-  }, [reports]);
+  }, [reports, success, showError]);
 
   // Exportar a CSV
   const exportToCSV = useCallback(() => {
-    const headers = ['ID', 'Título', 'Descripción', 'Estado', 'Categoría', 'Latitud', 'Longitud', 'Fecha'];
-    const rows = filteredReports.map(r => [
-      r.id,
-      r.title || '',
-      r.description || '',
-      r.state || '',
-      r.category || '',
-      r.lat || '',
-      r.lng || '',
-      r.timestamp ? new Date(r.timestamp).toLocaleString('es-ES') : ''
-    ]);
+    try {
+      const headers = ['ID', 'Título', 'Descripción', 'Estado', 'Categoría', 'Latitud', 'Longitud', 'Fecha'];
+      const rows = filteredReports.map(r => [
+        r.id,
+        r.title || '',
+        r.description || '',
+        r.state || '',
+        r.category || '',
+        r.lat || '',
+        r.lng || '',
+        r.timestamp ? new Date(r.timestamp).toLocaleString('es-ES') : ''
+      ]);
 
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-    ].join('\n');
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      ].join('\n');
 
-    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `reportes_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, [filteredReports]);
+      const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `reportes_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      success('Archivo CSV descargado exitosamente');
+    } catch (error) {
+      showError('Error al exportar el archivo CSV');
+    }
+  }, [filteredReports, success, showError]);
 
   const clearFilters = () => {
     setFilterState('all');
@@ -484,7 +495,15 @@ const Dashboard = () => {
                   {filteredReports.map(report => (
                     <tr key={report.id}>
                       <td>{report.id}</td>
-                      <td>{report.title}</td>
+                      <td>
+                        <button 
+                          onClick={() => navigate(`/report/${report.id}`)}
+                          className="report-title-link"
+                          title="Ver detalles"
+                        >
+                          {report.title}
+                        </button>
+                      </td>
                       <td className="description-cell">{report.description}</td>
                       <td>
                         <span className={`status-badge ${report.state}`}>
@@ -495,6 +514,13 @@ const Dashboard = () => {
                       <td>{report.timestamp ? new Date(report.timestamp).toLocaleDateString('es-ES') : '-'}</td>
                       <td>
                         <div className="action-buttons">
+                          <button 
+                            onClick={() => navigate(`/report/${report.id}`)}
+                            className="view-btn-small"
+                            title="Ver detalles"
+                          >
+                            👁️
+                          </button>
                           <select 
                             value={report.state} 
                             onChange={(e) => handleUpdateState(report.id, e.target.value)}
@@ -569,6 +595,12 @@ const Dashboard = () => {
                           <p><strong>Categoría:</strong> {report.category?.replace(/_/g, ' ')}</p>
                           <p>{report.description}</p>
                           <p><small>{report.timestamp ? new Date(report.timestamp).toLocaleString('es-ES') : ''}</small></p>
+                          <button 
+                            onClick={() => navigate(`/report/${report.id}`)}
+                            className="popup-view-btn"
+                          >
+                            Ver detalles →
+                          </button>
                         </div>
                       </Popup>
                     </Marker>

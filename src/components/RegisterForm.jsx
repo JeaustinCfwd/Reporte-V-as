@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/fetch.js';
+import { useToast } from '../contexts/ToastContext';
 import "../styles/Forms.css";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const { success, error: showError } = useToast();
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -29,7 +31,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmarPassword) {
-      alert("Las contraseñas no coinciden");
+      showError("Las contraseñas no coinciden");
       return;
     }
     const userData = {
@@ -42,12 +44,13 @@ const RegisterForm = () => {
       const user = await registerUser(userData);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
+        success(`¡Cuenta creada exitosamente! Bienvenido ${user.name}`);
         navigate('/dashboard');
       } else {
-        alert('Error al registrar usuario');
+        showError('Error al registrar usuario');
       }
     } catch (error) {
-      alert('Error al registrar: ' + error.message);
+      showError('Error al registrar: ' + error.message);
     }
     // Limpiar formulario
     setFormData({ nombre: '', email: '', password: '', confirmarPassword: '' });

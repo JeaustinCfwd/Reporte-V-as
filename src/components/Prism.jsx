@@ -33,7 +33,6 @@ const Prism = ({
       }
     };
 
-    // Initial resize
     setTimeout(resize, 0);
     window.addEventListener('resize', resize);
 
@@ -46,45 +45,55 @@ const Prism = ({
         return;
       }
       
-      ctx.clearRect(0, 0, w, h);
-      
-      // Create gradient background
-      const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h) * 0.8);
-      
-      const hue1 = (time * 2 + hueShift) % 360;
-      const hue2 = (time * 2 + hueShift + 60) % 360;
-      const hue3 = (time * 2 + hueShift + 120) % 360;
-      
-      gradient.addColorStop(0, `hsla(${hue1}, 80%, 60%, 0.4)`);
-      gradient.addColorStop(0.5, `hsla(${hue2}, 80%, 55%, 0.3)`);
-      gradient.addColorStop(1, `hsla(${hue3}, 80%, 50%, 0.2)`);
-      
-      ctx.fillStyle = gradient;
+      // Fondo oscuro base
+      ctx.fillStyle = '#0a0a0a';
       ctx.fillRect(0, 0, w, h);
       
-      // Draw prism shapes
-      const centerX = w / 2;
-      const centerY = h / 2;
+      // Crear múltiples orbes de luz con blur
+      const orbs = [
+        { x: 0.3, y: 0.4, size: 0.4, hue: 200, saturation: 80, lightness: 50 },
+        { x: 0.7, y: 0.3, size: 0.35, hue: 280, saturation: 70, lightness: 45 },
+        { x: 0.5, y: 0.7, size: 0.45, hue: 180, saturation: 75, lightness: 48 }
+      ];
       
-      for (let i = 0; i < 3; i++) {
-        const angle = (time * timeScale * 0.5 + i * 120) * Math.PI / 180;
-        const distance = Math.min(w, h) * 0.15 * scale;
-        const x = centerX + Math.cos(angle) * distance;
-        const y = centerY + Math.sin(angle) * distance;
+      orbs.forEach((orb, i) => {
+        const offsetAngle = (time * timeScale * 0.3 + i * 120) * Math.PI / 180;
+        const offsetX = Math.cos(offsetAngle) * 50;
+        const offsetY = Math.sin(offsetAngle) * 30;
         
-        const radius = Math.min(w, h) * 0.3 * scale;
-        const prismGradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-        const hue = (time * 3 + i * 120 + hueShift) % 360;
+        const x = w * orb.x + offsetX;
+        const y = h * orb.y + offsetY;
+        const radius = Math.min(w, h) * orb.size;
         
-        prismGradient.addColorStop(0, `hsla(${hue}, 90%, 70%, ${0.5 * glow})`);
-        prismGradient.addColorStop(0.4, `hsla(${hue + 30}, 85%, 60%, ${0.3 * glow})`);
-        prismGradient.addColorStop(1, `hsla(${hue + 60}, 80%, 50%, 0)`);
-        
-        ctx.fillStyle = prismGradient;
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
+        // Múltiples capas de gradiente para efecto de blur
+        for (let layer = 0; layer < 3; layer++) {
+          const layerRadius = radius * (1 + layer * 0.3);
+          const layerOpacity = (0.4 - layer * 0.1) * glow;
+          
+          const gradient = ctx.createRadialGradient(x, y, 0, x, y, layerRadius);
+          
+          const hue = (orb.hue + time * 0.5 + hueShift) % 360;
+          
+          gradient.addColorStop(0, `hsla(${hue}, ${orb.saturation}%, ${orb.lightness}%, ${layerOpacity})`);
+          gradient.addColorStop(0.3, `hsla(${hue + 20}, ${orb.saturation - 10}%, ${orb.lightness - 5}%, ${layerOpacity * 0.6})`);
+          gradient.addColorStop(0.6, `hsla(${hue + 40}, ${orb.saturation - 20}%, ${orb.lightness - 10}%, ${layerOpacity * 0.3})`);
+          gradient.addColorStop(1, `hsla(${hue + 60}, ${orb.saturation - 30}%, ${orb.lightness - 15}%, 0)`);
+          
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(x, y, layerRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      
+      // Overlay de viñeta oscura
+      const vignette = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h) * 0.7);
+      vignette.addColorStop(0, 'rgba(10, 10, 10, 0)');
+      vignette.addColorStop(0.7, 'rgba(10, 10, 10, 0.3)');
+      vignette.addColorStop(1, 'rgba(10, 10, 10, 0.8)');
+      
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, w, h);
       
       time += 1;
       animationRef.current = requestAnimationFrame(drawPrism);

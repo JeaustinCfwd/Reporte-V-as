@@ -6,9 +6,19 @@
       "description": "prueba ",
       "lat": 9.8903185,
       "lng": -84.0755289,
-      "state": "atendido",
+      "state": "nuevo",
       "category": "otro",
       "timestamp": "2025-09-30T14:57:01.322Z"
+    },
+    {
+      "id": "1759339125819",
+      "title": "Semaforo danado",
+      "description": "prueba ",
+      "lat": 9.8887505,
+      "lng": -84.0814715,
+      "state": "en_revision",
+      "category": "semaforo_danado",
+      "timestamp": "2025-10-01T17:18:45.819Z"
     }
   ],
   "users": [

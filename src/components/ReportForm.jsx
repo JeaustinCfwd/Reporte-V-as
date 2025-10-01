@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Camera, MapPin, Send } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
 import '../styles/ReportForm.css';
 
 // Componente para actualizar el centro del mapa
@@ -42,6 +43,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const ReportForm = () => {
+  const { success, error: showError, warning } = useToast();
   const [formData, setFormData] = useState({
     photos: [],
     description: '',
@@ -175,6 +177,17 @@ const ReportForm = () => {
       typeof formData.location.lng !== 'number' || isNaN(formData.location.lng)
     ) {
       setSubmitError('Por favor, ingresa una ubicación válida con latitud y longitud.');
+      showError('Por favor, selecciona una ubicación válida en el mapa');
+      return;
+    }
+    
+    if (!formData.category) {
+      showError('Por favor, selecciona una categoría');
+      return;
+    }
+    
+    if (!formData.description.trim()) {
+      showError('Por favor, agrega una descripción del problema');
       return;
     }
 
@@ -206,6 +219,8 @@ const ReportForm = () => {
       }
 
       setSubmitSuccess(true);
+      success('¡Reporte enviado exitosamente! Gracias por tu colaboración.');
+      
       // Restablecer formulario
       setFormData({
         photos: [],
@@ -216,6 +231,7 @@ const ReportForm = () => {
       setSelectedFiles([]);
     } catch (error) {
       setSubmitError(error.message);
+      showError('Error al enviar el reporte. Por favor, intenta nuevamente.');
     } finally {
       setIsSubmitting(false);
     }

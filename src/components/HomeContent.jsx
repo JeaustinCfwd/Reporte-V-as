@@ -5,7 +5,7 @@ import CategoryCarousel from './CategoryCarousel';
 import GlareHover from './GlareHover';
 import RatingBox from './RatingBox';
 import CountUp from './CountUp';
-import Prism from './Prism';
+import Prism from './PrismOGL';
 import '../styles/Home.css';
 
 const carouselItems = [
@@ -103,11 +103,11 @@ function HomeContent() {
           timeScale={0.5}
           height={3.5}
           baseWidth={5.5}
-          scale={2.5}
+          scale={3.6}
           hueShift={0}
           colorFrequency={1}
-          noise={0.5}
-          glow={1.2}
+          noise={0}
+          glow={1}
         />
         <h2 className="titulo-principal">Transforma tu ciudad con cada reporte</h2>
         <p className="descripcion-inicio">
