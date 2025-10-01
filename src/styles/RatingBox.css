@@ -173,6 +173,35 @@
   cursor: not-allowed;
 }
 
+/* Star Selector */
+.stars {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+  justify-content: center;
+}
+
+.star {
+  font-size: 2.5rem;
+  color: #E0E0E0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.star:hover {
+  transform: scale(1.1);
+  color: #FFB300;
+}
+
+.star.checked {
+  color: #00C853;
+}
+
+.star.checked:hover {
+  color: #00A844;
+}
+
 /* Comments Section */
 .comments-section {
   margin-top: 40px;

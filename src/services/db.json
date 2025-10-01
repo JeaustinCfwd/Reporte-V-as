@@ -6,7 +6,7 @@
       "description": "prueba ",
       "lat": 9.8903185,
       "lng": -84.0755289,
-      "state": "nuevo",
+      "state": "atendido",
       "category": "otro",
       "timestamp": "2025-09-30T14:57:01.322Z"
     }
@@ -35,6 +35,22 @@
       "rating": 4,
       "comment": "muy bueno el sitio",
       "timestamp": "2025-09-30T21:22:40.547Z"
+    },
+    {
+      "id": "d01b",
+      "userId": "d3f4",
+      "userName": "Jeaustin",
+      "rating": 4,
+      "comment": "probando si sirve",
+      "timestamp": "2025-09-30T21:46:52.114Z"
+    },
+    {
+      "id": "9d79",
+      "userId": "d3f4",
+      "userName": "Jeaustin",
+      "rating": 2,
+      "comment": "prueba de estrellas",
+      "timestamp": "2025-10-01T03:57:52.950Z"
     }
   ]
 }
