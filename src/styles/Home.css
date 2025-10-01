@@ -387,6 +387,10 @@
   padding: 1rem;
 }
 
+.titulo-dashboard-white {
+  color: #ffffff;
+}
+
 /* Sección RatingBox */
 .seccion-ratingbox {
   background: white;

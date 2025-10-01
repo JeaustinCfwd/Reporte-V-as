@@ -31,7 +31,7 @@ L.Icon.Default.mergeOptions({
 const createCustomIcon = (color) => {
   return L.divIcon({
     className: 'custom-marker',
-    html: `<div style="background-color: ${color}; width: 25px; height: 25px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>`,
+    html: `<div class="map-marker" style="background-color: ${color};"></div>`,
     iconSize: [25, 25],
     iconAnchor: [12, 12],
   });
@@ -575,7 +575,6 @@ const Dashboard = () => {
               <MapContainer
                 center={[9.9281, -84.0907]}
                 zoom={10}
-                style={{ height: '600px', width: '100%', borderRadius: '12px' }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

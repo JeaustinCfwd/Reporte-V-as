@@ -157,6 +157,12 @@
   background-color: #0097a7 !important;
 }
 
+/* Botones móviles con ancho completo */
+.mobile-full-width {
+  width: 100%;
+  text-align: left;
+}
+
 /* Clase para compensar el header fijo */
 .main-content {
   padding-top: 60px; /* Altura del header */

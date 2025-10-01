@@ -252,7 +252,6 @@ const ReportDetailView = () => {
                 <MapContainer
                   center={[report.lat, report.lng]}
                   zoom={15}
-                  style={{ height: '300px', width: '100%', borderRadius: '12px' }}
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

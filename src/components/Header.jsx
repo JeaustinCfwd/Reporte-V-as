@@ -58,14 +58,13 @@ const Header = () => {
   
   // 5. Función de toggle simplificada
   const toggleMenuMovil = () => setMenuMovilAbierto(p => !p);
-
   return (
     <header className="encabezado-sitio">
       <div className="contenedor-navbar">
         <div className="logo-sitio">
           {/* 2. Eliminar estilos en línea simples del NavLink del logo */}
           <NavLink to="/" className="logo-link"> 
-            <h1 style={{ cursor: 'pointer' }}>
+            <h1 style={{ margin: 0 }}>
               <ShinyText text="ReporteVías CR" speed={3} />
             </h1>
           </NavLink>
@@ -146,8 +145,7 @@ const Header = () => {
                 <button
                   key={enlace.id}
                   onClick={() => { handleProtectedClick(); }} // handleProtectedClick ya cierra el menú
-                  className="enlace-movil btn-reset"
-                  style={{ width: '100%', textAlign: 'left' }} 
+                  className="enlace-movil btn-reset mobile-full-width"
                 >
                   {enlace.icono && <span className="icono-enlace">{enlace.icono}</span>}
                   {enlace.nombre}
@@ -177,8 +175,7 @@ const Header = () => {
                 </NavLink>
                 <button
                   onClick={handleLogout}
-                  className="enlace-movil boton-login-movil btn-reset"
-                  style={{ width: '100%', textAlign: 'left' }}
+                  className="enlace-movil boton-login-movil btn-reset mobile-full-width"
                 >
                   <LogOut size={16} className="inline mr-2" />
                   Cerrar Sesión

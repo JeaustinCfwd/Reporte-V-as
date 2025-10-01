@@ -568,11 +568,11 @@
 .legend-marker.atendido {
   background: #48BB78;
 }
-
 .map-container-wrapper {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: 600px;
 }
 
 .map-popup h4 {
@@ -581,38 +581,12 @@
   font-size: 1rem;
 }
 
-.map-popup p {
-  margin: 0.25rem 0;
-  font-size: 0.875rem;
-  color: #475569;
-}
-
-.popup-view-btn {
-  margin-top: 0.75rem;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  background: #4F46E5;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.popup-view-btn:hover {
-  background: #4338CA;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-}
-
-/* Stats Detail */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+.map-marker {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .stat-detail-card {
