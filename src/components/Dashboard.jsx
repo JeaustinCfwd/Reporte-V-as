@@ -300,7 +300,7 @@ const Dashboard = () => {
       {/* Sidebar */}
       <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
-          <h2>Dashboard</h2>
+          {sidebarOpen && <h2>Dashboard</h2>}
           <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
             {sidebarOpen ? '←' : '→'}
           </button>

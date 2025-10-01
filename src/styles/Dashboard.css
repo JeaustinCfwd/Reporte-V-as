@@ -32,6 +32,11 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.dashboard-sidebar.closed .sidebar-header {
+  justify-content: center;
+  padding: 2rem 0.75rem;
+}
+
 .sidebar-header h2 {
   font-size: 1.375rem;
   margin: 0;
