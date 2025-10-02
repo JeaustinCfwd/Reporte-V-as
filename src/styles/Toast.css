@@ -1,4 +1,4 @@
-/* Toast Container */
+/* Contenedor de Toast */
 .toast-container {
   position: fixed;
   top: 20px;
@@ -43,7 +43,7 @@
   transform: translateY(-2px);
 }
 
-/* Toast Types */
+/* Tipos de Toast */
 .toast-success {
   border-left-color: #48BB78;
   background: linear-gradient(to right, rgba(72, 187, 120, 0.1), white);
@@ -64,14 +64,14 @@
   background: linear-gradient(to right, rgba(90, 103, 216, 0.1), white);
 }
 
-/* Toast Icon */
+/* Icono de Toast */
 .toast-icon {
   font-size: 24px;
   flex-shrink: 0;
   line-height: 1;
 }
 
-/* Toast Message */
+/* Mensaje de Toast */
 .toast-message {
   flex: 1;
   font-size: 15px;
@@ -81,7 +81,7 @@
   word-break: break-word;
 }
 
-/* Toast Close Button */
+/* Botón de Cerrar Toast */
 .toast-close {
   background: transparent;
   border: none;
@@ -105,7 +105,7 @@
   color: #374151;
 }
 
-/* Responsive */
+/* Responsivo */
 @media (max-width: 640px) {
   .toast-container {
     top: 10px;
@@ -119,7 +119,7 @@
   }
 }
 
-/* Exit Animation */
+/* Animación de Salida */
 .toast-exit {
   animation: slideOut 0.3s ease-in forwards;
 }

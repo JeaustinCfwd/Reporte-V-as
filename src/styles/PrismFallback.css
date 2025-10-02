@@ -1,4 +1,4 @@
-/* Prism Fallback - CSS Animated Background */
+/* Prism Fallback - Fondo Animado CSS */
 .prism-fallback {
   position: absolute;
   top: 0;
@@ -94,7 +94,7 @@
   }
 }
 
-/* Vignette effect */
+/* Efecto viñeta */
 .prism-fallback::after {
   content: '';
   position: absolute;
@@ -108,7 +108,7 @@
   pointer-events: none;
 }
 
-/* Responsive */
+/* Responsivo */
 @media (max-width: 768px) {
   .prism-orb-1 {
     width: 400px;

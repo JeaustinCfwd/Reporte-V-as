@@ -19,7 +19,7 @@
 
 .map-main {
   flex: 1 1 auto;
-  margin-bottom: 40px; /* height of footer */
+  margin-bottom: 40px; /* altura del footer */
   height: calc(100vh - 160px);
   width: 100%;
 }

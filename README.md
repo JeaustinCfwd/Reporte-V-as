@@ -2,6 +2,27 @@
 
 Sistema web interactivo para la gestión y visualización de reportes sobre el estado de las vías públicas. Permite a los usuarios reportar problemas en las carreteras, visualizarlos en un mapa interactivo y gestionar su seguimiento mediante un dashboard administrativo.
 
+## 📁 Estructura del Proyecto
+
+```
+Reporte-Vias/
+├── public/                  # Archivos estáticos (favicon, imágenes públicas)
+├── src/                     # Código fuente de la aplicación
+│   ├── assets/              # Imágenes y recursos estáticos
+│   ├── components/          # Componentes React reutilizables
+│   ├── contexts/            # Contextos para manejo de estado global
+│   ├── pages/               # Páginas principales de la aplicación
+│   ├── routes/              # Configuración de rutas y rutas privadas
+│   ├── services/            # Servicios y datos mock (db.json)
+│   ├── styles/              # Archivos CSS y estilos
+│   ├── App.jsx              # Componente raíz
+│   └── main.jsx             # Punto de entrada
+├── index.html               # Archivo HTML principal
+├── package.json             # Dependencias y scripts
+├── vite.config.js           # Configuración de Vite
+└── README.md                # Documentación del proyecto
+```
+
 ## ✨ Características Principales
 
 ### 🎯 Para Usuarios
@@ -64,7 +85,7 @@ Sistema web interactivo para la gestión y visualización de reportes sobre el e
 
 1. **Clonar el repositorio**
 ```bash
-git clone <https://github.com/JeaustinCfwd/Reporte-V-as.git>
+git clone https://github.com/JeaustinCfwd/Reporte-Vias.git
 cd Reporte-Vias
 ```
 
@@ -180,6 +201,10 @@ PATCH  /users/:id         # Actualizar usuario
 GET    /reviews           # Obtener calificaciones
 POST   /reviews           # Crear calificación
 ```
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para sugerir mejoras o reportar problemas.
 
 ## 📝 Licencia
 

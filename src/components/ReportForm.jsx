@@ -158,7 +158,7 @@ const ReportForm = () => {
       lng: formData.location.lng,
       state: 'nuevo',
       category: formData.category,
-      // photos: formData.photos, // Omitido por ahora, json-server no maneja archivos
+      
       timestamp: new Date().toISOString()
     };
 

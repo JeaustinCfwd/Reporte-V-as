@@ -1,4 +1,4 @@
-/* Report Detail Container */
+/* Contenedor de Detalle del Reporte */
 .report-detail-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-/* Header */
+/* Encabezado */
 .detail-header {
   display: flex;
   justify-content: space-between;
@@ -83,14 +83,14 @@
   border: 2px solid #48BB78;
 }
 
-/* Content Layout */
+/* Diseño del Contenido */
 .detail-content {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 2rem;
 }
 
-/* Cards */
+/* Tarjetas */
 .detail-card {
   background: white;
   border-radius: 16px;
@@ -114,7 +114,7 @@
   gap: 0.5rem;
 }
 
-/* Card Header */
+/* Encabezado de Tarjeta */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -145,7 +145,7 @@
   gap: 0.5rem;
 }
 
-/* Meta Information */
+/* Información Meta */
 .report-meta {
   display: flex;
   flex-direction: column;
@@ -185,7 +185,7 @@
   font-weight: 600;
 }
 
-/* Description */
+/* Descripción */
 .report-description,
 .report-contact {
   margin-top: 1.5rem;
@@ -207,7 +207,7 @@
   margin: 0;
 }
 
-/* Image Gallery */
+/* Galería de Imágenes */
 .image-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -253,7 +253,7 @@
   opacity: 1;
 }
 
-/* Map */
+/* Mapa */
 .detail-map {
   border-radius: 12px;
   overflow: hidden;
@@ -274,7 +274,7 @@
   border-radius: 8px;
 }
 
-/* State Card */
+/* Tarjeta de Estado */
 .state-card {
   background: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
 }
@@ -315,7 +315,7 @@
   line-height: 1.5;
 }
 
-/* Timeline */
+/* Línea de Tiempo */
 .timeline {
   position: relative;
   padding-left: 2rem;
@@ -377,7 +377,7 @@
   font-weight: 600;
 }
 
-/* Action Buttons */
+/* Botones de Acción */
 .action-buttons-vertical {
   display: flex;
   flex-direction: column;
@@ -539,7 +539,7 @@
   color: #111827;
 }
 
-/* Loading & Error States */
+/* Estados de Carga y Error */
 .detail-loading,
 .detail-error {
   display: flex;
@@ -607,7 +607,7 @@
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
 
-/* Responsive */
+/* Responsivo */
 @media (max-width: 1024px) {
   .detail-content {
     grid-template-columns: 1fr;
