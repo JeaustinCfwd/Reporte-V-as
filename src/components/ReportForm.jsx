@@ -57,7 +57,6 @@ const ReportForm = () => {
   const [addressSearch, setAddressSearch] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState('');
-  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files).filter(file => file.type.startsWith('image/'));
@@ -122,48 +121,6 @@ const ReportForm = () => {
     } finally {
       setIsSearching(false);
     }
-  };
-
-  const handleGetCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      setSearchError('Tu navegador no soporta geolocalización');
-      return;
-    }
-
-    setIsGettingLocation(true);
-    setSearchError('');
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setFormData(prev => ({
-          ...prev,
-          location: { lat: latitude, lng: longitude }
-        }));
-        setIsGettingLocation(false);
-      },
-      (error) => {
-        setIsGettingLocation(false);
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            setSearchError('Permiso de ubicación denegado. Permite el acceso a tu ubicación en el navegador.');
-            break;
-          case error.POSITION_UNAVAILABLE:
-            setSearchError('Ubicación no disponible. Verifica tu GPS.');
-            break;
-          case error.TIMEOUT:
-            setSearchError('Tiempo de espera agotado. Intenta de nuevo.');
-            break;
-          default:
-            setSearchError('Error al obtener ubicación.');
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      }
-    );
   };
 
   const handleSubmit = async (e) => {
@@ -317,31 +274,16 @@ const ReportForm = () => {
             <MapPin className="section-icon" />
             Ubicación
           </h2>
-          
           {/* Búsqueda por dirección */}
           <div className="address-search-container">
             <label htmlFor="address-search" className="address-label">
-              📍 Opciones para ubicar el reporte:
+              📍 Busca la dirección:
             </label>
-            
-            {/* Botón GPS */}
-            <button
-              type="button"
-              onClick={handleGetCurrentLocation}
-              disabled={isGettingLocation}
-              className="gps-button"
-            >
-              📱 {isGettingLocation ? 'Obteniendo ubicación...' : 'Usar mi ubicación actual (GPS)'}
-            </button>
-
-            <div className="divider-text">O busca por lugar:</div>
-
             <div className="address-search-input-group">
               <input
                 type="text"
                 id="address-search"
                 placeholder="Ej: La Capri, Desamparados"
-                value={addressSearch}
                 onChange={(e) => setAddressSearch(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddressSearch())}
                 className="address-search-input"
@@ -357,7 +299,7 @@ const ReportForm = () => {
             </div>
             {searchError && <p className="search-error">{searchError}</p>}
             <p className="address-hint">
-              💡 <strong>Instrucciones:</strong><br/>
+              <strong>Instrucciones:</strong><br/>
               1. Busca el distrito/cantón más cercano (ej: "La Capri" o "Desamparados")<br/>
               2. Luego <strong>haz clic en el mapa</strong> para marcar el punto exacto<br/>
               3. O arrastra el marcador rojo a la ubicación precisa
@@ -372,7 +314,7 @@ const ReportForm = () => {
               maxZoom={18}
               maxBounds={[[8.0, -86.0], [11.5, -82.5]]}
               maxBoundsViscosity={1.0}
-              style={{ height: '300px', width: '100%' }}
+              style={{ height: '250px', width: '100%' }}
               className="leaflet-map"
             >
               <ChangeMapView center={[formData.location.lat, formData.location.lng]} zoom={14} />
@@ -394,12 +336,6 @@ const ReportForm = () => {
             </MapContainer>
           </div>
           
-          <div className="coordinates-display">
-            <strong>📌 Coordenadas actuales:</strong> 
-            <span className="coord-value">Lat: {formData.location.lat.toFixed(6)}</span>
-            <span className="coord-value">Lng: {formData.location.lng.toFixed(6)}</span>
-          </div>
-
           <div className="location-inputs">
             <input
               type="number"
